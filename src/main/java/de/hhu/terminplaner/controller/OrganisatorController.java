@@ -24,8 +24,8 @@ public class OrganisatorController {
   public String setup(Model model) {
     //model.addAttribute("zeitslot", new Zeitslot("", List.of(new Tutor(), new Tutor())));
     model.addAttribute("tag",
-        new Tag("", List.of(new Zeitslot("z1", List.of(new Tutor())),
-            new Zeitslot("z2", List.of(new Tutor())))));
+        new Tag("", List.of(
+            new Zeitslot("z1", List.of(new Tutor(), new Tutor(), new Tutor(), new Tutor())))));
     return "organisator/setup";
   }
 
