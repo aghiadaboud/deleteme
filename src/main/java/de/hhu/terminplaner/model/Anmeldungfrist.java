@@ -1,16 +1,17 @@
 package de.hhu.terminplaner.model;
 
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Zeitraum {
-
-    private LocalDate von;
-    private LocalDate bis;
+public class Anmeldungfrist {
+  @NonNull
+  private LocalDate von;
+  @NonNull
+  private LocalDate bis;
 }

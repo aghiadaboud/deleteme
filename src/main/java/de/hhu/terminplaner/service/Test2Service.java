@@ -18,4 +18,8 @@ public class Test2Service {
     test2Repository.save(test2);
     return test2;
   }
+
+  public Test2 findTest2(Long s2) {
+    return test2Repository.findById(s2).get();
+  }
 }

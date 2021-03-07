@@ -8,23 +8,20 @@ import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
-public class Test {
+public class Root {
+
   @Id
   Long id;
 
-  String s;
+  String r;
 
-  Test2 test2;
+  Set<Test> test = new HashSet<>();
 
-  Set<Test3> test3 = new HashSet<>();
-
-
-  public Test(String s) {
-    this.s = s;
+  public Root(String r) {
+    this.r = r;
   }
 
-
-  public void addTest3(Test3 newt) {
-    this.test3.add(newt);
+  public void addTest(Test newt) {
+    this.test.add(newt);
   }
 }

@@ -78,17 +78,17 @@
                                     <input class="form-control mb-2" id="datum" name="datum" th:field="*{datum}"
                                            type="date">
                                 </div>
-                                <div th:each="zeitslot, i : ${tag.zeitslots}">
+                                <div th:each="termin, i : ${tag.termins}">
                                     <div>
                                         <label class="mb-0" for="uhrzeit">Uhrzeit</label>
                                         <input class="form-control mb-2" id="uhrzeit" name="uhrzeit"
-                                               th:field="${tag.zeitslots[__${i.index}__].uhrzeit}"
+                                               th:field="${tag.termins[__${i.index}__].uhrzeit}"
                                                type="time">
                                     </div>
-                                    <div id="tutor" th:each="tutor, j : ${zeitslot.tutoren}">
+                                    <div id="tutor" th:each="tutor, j : ${termin.tutoren}">
                                         <label class="mb-0" for="name">Tutor-Name</label>
                                         <input id="name"
-                                               th:field="${tag.zeitslots[__${i.index}__].tutoren[__${j.index}__].name}"
+                                               th:field="${tag.termins[__${i.index}__].tutoren[__${j.index}__].name}"
                                                type="text">
                                     </div>
                                 </div>

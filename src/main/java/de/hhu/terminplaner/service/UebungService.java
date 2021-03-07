@@ -1,11 +1,10 @@
 package de.hhu.terminplaner.service;
 
+import de.hhu.terminplaner.model.Anmeldungfrist;
 import de.hhu.terminplaner.model.Uebung;
-import de.hhu.terminplaner.model.Zeitraum;
 import de.hhu.terminplaner.model.Zeitslot;
 import de.hhu.terminplaner.repos.UebungRepository;
 import java.util.Optional;
-import java.util.Set;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class UebungService {
 
   private UebungRepository uebungRepository;
-  private ZeitslotService zeitslotService;
 
   public UebungService(UebungRepository uebungRepository) {
     this.uebungRepository = uebungRepository;
@@ -32,18 +30,12 @@ public class UebungService {
 //                new ResponseStatusException(NOT_FOUND, "Keine Uebung mit id " + uebungid + " vorhanden."));
   }
 
-  public Long createUebung(String name, Boolean gruppenanmeldung, Zeitraum zeitraum) {
-    Uebung uebung = new Uebung(name, gruppenanmeldung, zeitraum);
+  public Long createUebung(String name, Boolean gruppenanmeldung, Anmeldungfrist anmeldungfrist) {
+    Uebung uebung = new Uebung(name, gruppenanmeldung, anmeldungfrist);
     uebungRepository.save(uebung);
     return uebung.getId();
   }
 
-  public Long createUebung(Set<Zeitslot> zeitslots, String name, Boolean gruppenanmeldung,
-                           Zeitraum zeitraum) {
-    Uebung uebung = new Uebung(zeitslots, name, gruppenanmeldung, zeitraum);
-    uebungRepository.save(uebung);
-    return uebung.getId();
-  }
 
   public void addZeitslot(Long uebungid, @NonNull Zeitslot zeitslot) throws NullPointerException {
     Uebung uebung = findUebungById(uebungid);

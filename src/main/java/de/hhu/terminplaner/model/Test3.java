@@ -1,21 +1,19 @@
 package de.hhu.terminplaner.model;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class Tutor {
+public class Test3 {
 
   @Id
-  private Long id;
-  @NonNull
-  private String githubname;
+  Long id;
 
+  String s3;
 
+  public Test3(String s3) {
+    this.s3 = s3;
+  }
 }

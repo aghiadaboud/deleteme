@@ -2,6 +2,7 @@ package de.hhu.terminplaner.service;
 
 import de.hhu.terminplaner.model.Test;
 import de.hhu.terminplaner.model.Test2;
+import de.hhu.terminplaner.model.Test3;
 import de.hhu.terminplaner.repos.TestRepository;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,10 @@ public class TestService {
     this.testRepository = testRepository;
   }
 
-  public void createTest(String s, Test2 test2) {
-    Test test = new Test(s, test2);
+  public void createTest(Test2 test2, Test3 test3) {
+    Test test = new Test();
+    test.setTest2(test2);
+    test.addTest3(test3);
     testRepository.save(test);
   }
 
@@ -26,9 +29,9 @@ public class TestService {
     return test.getId();
   }
 
-  public void addTest2(Long id, Test2 test2) {
-    Optional<Test> test = testRepository.findById(id);
-    test.get().setTest2(test2);
+  public void addTest3(Test3 test3) {
+    Optional<Test> test = testRepository.findById(2L);
+    test.get().addTest3(test3);
     testRepository.save(test.get());
   }
 

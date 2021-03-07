@@ -1,11 +1,11 @@
 package de.hhu.terminplaner.model;
 
-import org.springframework.data.annotation.Id;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class Test2 {
-  @Id
-  Long id;
-
   String s2;
 
   public Test2(String s2) {
