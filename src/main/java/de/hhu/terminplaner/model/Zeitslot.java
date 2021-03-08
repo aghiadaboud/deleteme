@@ -3,7 +3,6 @@ package de.hhu.terminplaner.model;
 
 import java.util.HashSet;
 import java.util.Set;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -11,7 +10,6 @@ import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Zeitslot {
 
   @Id
@@ -21,9 +19,8 @@ public class Zeitslot {
   private Termin termin;
   private Set<Tutor> tutoren = new HashSet<>();
 
-  public Zeitslot(Termin termin, Tutor tutor) {
+  public Zeitslot(Termin termin) {
     //tutoren.forEach(this::addTutor);
-    addTutor(tutor);
     this.termin = termin;
   }
 
@@ -31,10 +28,18 @@ public class Zeitslot {
     return tutoren.size();
   }
 
+//  public boolean addTutor(Tutor tutor) {
+//    if (this.tutoren.add(tutor)) {
+//      kapazitaet = kapazitaet + 1;
+//    }
+//    return false;
+//  }
+
+  public void increaseKapazitaet(Integer number) {
+    this.kapazitaet += number;
+  }
+
   public boolean addTutor(Tutor tutor) {
-    if (this.tutoren.add(tutor)) {
-      kapazitaet = kapazitaet + 1;
-    }
-    return false;
+    return this.tutoren.add(tutor);
   }
 }

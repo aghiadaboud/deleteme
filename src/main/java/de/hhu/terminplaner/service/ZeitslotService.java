@@ -22,9 +22,13 @@ public class ZeitslotService {
   }
 
 
-  public void createZeitslot(Termin termin, Tutor tutor) {
-    Zeitslot zeitslot = new Zeitslot(termin, tutor);
+  public Long createZeitslot(Termin termin, Tutor tutor) {
+    // termin und tutor validieren
+    Zeitslot zeitslot = new Zeitslot(termin);
+    boolean tutorAdded = zeitslot.addTutor(tutor);
+    zeitslot.increaseKapazitaet(1);
     zeitslotRepository.save(zeitslot);
+    return zeitslot.getId();
   }
 
   public Zeitslot findZeitslotById(Long id) {
