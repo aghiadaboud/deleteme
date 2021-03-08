@@ -17,7 +17,7 @@ public class TerminService {
 
   public void addGruppe(Long id, Gruppe gruppe) throws NullPointerException {
     Termin termin = findTerminById(id);
-    termin.setGruppe(gruppe);
+    boolean added = termin.addGruppe(gruppe);
     terminRepository.save(termin);
   }
 

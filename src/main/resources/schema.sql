@@ -75,9 +75,10 @@ create table if not exists organisator
 
 create table if not exists termin
 (
-    zeitslot      BIGINT primary key references zeitslot (id) on delete CASCADE,
+    id       BIGINT primary key AUTO_INCREMENT,
     zeitstempel TIMESTAMP,
-    reserviert BOOLEAN
+    reserviert BOOLEAN,
+    zeitslot      BIGINT references zeitslot (id) on delete CASCADE
 );
 
 create table if not exists gruppe
