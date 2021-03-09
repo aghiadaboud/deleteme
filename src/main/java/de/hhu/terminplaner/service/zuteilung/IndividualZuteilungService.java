@@ -1,4 +1,4 @@
-package de.hhu.terminplaner.service;
+package de.hhu.terminplaner.service.zuteilung;
 
 
 import org.springframework.stereotype.Service;

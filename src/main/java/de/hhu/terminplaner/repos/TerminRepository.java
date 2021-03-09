@@ -1,6 +1,6 @@
 package de.hhu.terminplaner.repos;
 
-import de.hhu.terminplaner.model.Termin;
+import de.hhu.terminplaner.model.termin.Termin;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

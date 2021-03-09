@@ -1,9 +1,9 @@
-package de.hhu.terminplaner.model;
+package de.hhu.terminplaner.model.gruppe;
 
 
+import de.hhu.terminplaner.stereotype.AggregateRoot;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -11,7 +11,7 @@ import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AggregateRoot
 public class Gruppe {
 
   @Id

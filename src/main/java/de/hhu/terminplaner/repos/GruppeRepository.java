@@ -1,6 +1,6 @@
 package de.hhu.terminplaner.repos;
 
-import de.hhu.terminplaner.model.Gruppe;
+import de.hhu.terminplaner.model.gruppe.Gruppe;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jdbc.repository.query.Query;

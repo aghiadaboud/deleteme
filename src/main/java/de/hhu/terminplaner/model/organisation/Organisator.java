@@ -1,4 +1,4 @@
-package de.hhu.terminplaner.model;
+package de.hhu.terminplaner.model.organisation;
 
 
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package de.hhu.terminplaner.service;
 
-import de.hhu.terminplaner.model.Termin;
-import de.hhu.terminplaner.model.Tutor;
-import de.hhu.terminplaner.model.Zeitslot;
+import de.hhu.terminplaner.model.termin.Termin;
+import de.hhu.terminplaner.model.zeitslot.Tutor;
+import de.hhu.terminplaner.model.zeitslot.Zeitslot;
 import de.hhu.terminplaner.repos.ZeitslotRepository;
 import java.util.List;
 import java.util.Optional;

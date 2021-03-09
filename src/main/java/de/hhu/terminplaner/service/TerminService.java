@@ -1,7 +1,7 @@
 package de.hhu.terminplaner.service;
 
-import de.hhu.terminplaner.model.Gruppe;
-import de.hhu.terminplaner.model.Termin;
+import de.hhu.terminplaner.model.gruppe.Gruppe;
+import de.hhu.terminplaner.model.termin.Termin;
 import de.hhu.terminplaner.repos.TerminRepository;
 import java.util.Optional;
 import org.springframework.stereotype.Service;

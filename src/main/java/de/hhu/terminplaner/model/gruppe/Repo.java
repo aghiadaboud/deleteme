@@ -1,13 +1,11 @@
-package de.hhu.terminplaner.model;
+package de.hhu.terminplaner.model.gruppe;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Repo {
 

@@ -1,6 +1,8 @@
-package de.hhu.terminplaner.model;
+package de.hhu.terminplaner.model.zeitslot;
 
 
+import de.hhu.terminplaner.model.termin.Termin;
+import de.hhu.terminplaner.stereotype.AggregateRoot;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
@@ -10,6 +12,7 @@ import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
+@AggregateRoot
 public class Zeitslot {
 
   @Id

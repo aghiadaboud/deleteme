@@ -1,8 +1,8 @@
 package de.hhu.terminplaner.service;
 
-import de.hhu.terminplaner.model.Anmeldungfrist;
-import de.hhu.terminplaner.model.Uebung;
-import de.hhu.terminplaner.model.Zeitslot;
+import de.hhu.terminplaner.model.uebung.Anmeldungfrist;
+import de.hhu.terminplaner.model.uebung.Uebung;
+import de.hhu.terminplaner.model.zeitslot.Zeitslot;
 import de.hhu.terminplaner.repos.UebungRepository;
 import java.util.Optional;
 import lombok.NonNull;
