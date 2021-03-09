@@ -7,7 +7,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class Student {
+class Student {
 
   @NonNull
   private String githubname;

@@ -7,7 +7,7 @@ import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
-public class Repo {
+class Repo {
 
   @NonNull
   private String name;

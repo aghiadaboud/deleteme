@@ -29,7 +29,7 @@ create table if not exists zeitslot
 
 create table if not exists tutor
 (
-    id         BIGINT primary key AUTO_INCREMENT,
+    tutorid         BIGINT primary key AUTO_INCREMENT,
     githubname VARCHAR(100) NOT NULL,
     zeitslot      BIGINT references zeitslot (id)
 );
@@ -63,7 +63,7 @@ create table if not exists gruppe
 
 create table if not exists student
 (
-    id         BIGINT primary key AUTO_INCREMENT,
+    studentid         BIGINT primary key AUTO_INCREMENT,
     githubname VARCHAR(100) NOT NULL,
     gruppe     BIGINT references gruppe (id)
 );

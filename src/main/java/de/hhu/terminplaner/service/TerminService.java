@@ -11,6 +11,7 @@ public class TerminService {
 
   private TerminRepository terminRepository;
 
+
   public TerminService(TerminRepository terminRepository) {
     this.terminRepository = terminRepository;
   }
