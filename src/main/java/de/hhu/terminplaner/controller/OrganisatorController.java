@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/setup")
 public class OrganisatorController {
 
-  UebungService uebungService;
-  ZeitslotService zeitslotService;
+  private UebungService uebungService;
+  private ZeitslotService zeitslotService;
 
-  TutorService tutorService;
+  private TutorService tutorService;
 
   public OrganisatorController(UebungService uebungService, ZeitslotService zeitslotService,
                                TutorService tutorService) {

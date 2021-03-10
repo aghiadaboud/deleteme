@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '2.4.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "com.github.spotbugs" version "4.6.0"
+    id 'checkstyle'
 }
 
 group = 'de.hhu'
@@ -17,14 +19,30 @@ configurations {
 repositories {
     mavenCentral()
 }
+checkstyle {
+    toolVersion = "8.41"
+    ignoreFailures = false
+    maxWarnings = 0
+}
+spotbugs {
+    effort = "max"
+}
+spotbugsMain {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
 
 dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    //implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.projectlombok:lombok'
+    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.1.4'
     //runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly 'com.h2database:h2'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -32,6 +50,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.tngtech.archunit:archunit-junit5:0.14.1'
+    //testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
