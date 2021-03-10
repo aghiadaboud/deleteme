@@ -1,9 +1,8 @@
-package de.hhu.terminplaner.service;
+package de.hhu.terminplaner.service.zeitslot;
 
-import de.hhu.terminplaner.model.termin.Termin;
-import de.hhu.terminplaner.model.zeitslot.Tutor;
-import de.hhu.terminplaner.model.zeitslot.Zeitslot;
+import de.hhu.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.terminplaner.repos.ZeitslotRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -22,11 +21,9 @@ public class ZeitslotService {
   }
 
 
-  public Long createZeitslot(Termin termin, Tutor tutor) {
+  public Long createZeitslot(LocalDate datum, String uhrzeit) {
     // termin und tutor validieren
-    Zeitslot zeitslot = new Zeitslot(termin);
-    boolean tutorAdded = zeitslot.addTutor(tutor);
-    zeitslot.increaseKapazitaet(1);
+    Zeitslot zeitslot = new Zeitslot(datum, uhrzeit);
     zeitslotRepository.save(zeitslot);
     return zeitslot.getId();
   }
@@ -46,4 +43,8 @@ public class ZeitslotService {
     zeitslotRepository.deleteById(id);
   }
 
+
+  public void saveZeitslot(Zeitslot zeitslot) {
+    zeitslotRepository.save(zeitslot);
+  }
 }

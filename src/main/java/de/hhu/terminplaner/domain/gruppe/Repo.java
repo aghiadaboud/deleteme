@@ -1,4 +1,4 @@
-package de.hhu.terminplaner.model.gruppe;
+package de.hhu.terminplaner.domain.gruppe;
 
 
 import lombok.AllArgsConstructor;

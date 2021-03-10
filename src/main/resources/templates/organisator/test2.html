@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{../../static/dist/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container">
+    <div id="new-order">
+
+        <h1 th:object="${uebung}"
+            th:text="*{name}">Otto Müller</h1>
+
+        <form action="#" method="post">
+            <div class="form-group">
+                <div>
+                    <label class="mb-0" for="datum">Datum</label>
+                    <input class="form-control mb-2" id="datum" name="datum" type="date">
+                </div>
+                <div>
+                    <label class="mb-0" for="uhrzeit">Uhrzeit</label>
+                    <input class="form-control mb-2" id="uhrzeit" name="uhrzeit"
+                           type="time">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Erstellen">
+            </div>
+        </form>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Termine</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="zeitslot :${zeitslots}">
+                <td>
+                    <!--                    <a href="#"-->
+                    <!--                       th:href="@{setup/uebung/{uebungid}/termin/{id}(uebungid=${uebung.id}, id=${zeitslot.id})}"-->
+                    <!--                       th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">-->
+                    <!--                    </a>-->
+                    <a href="#"
+                       th:href="@{{uebungid}/zeitslot/{id}(id=${zeitslot.id}, uebungid=${uebung.id})}"
+                       th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

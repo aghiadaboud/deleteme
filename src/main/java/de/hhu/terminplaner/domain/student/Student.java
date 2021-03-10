@@ -1,14 +1,19 @@
-package de.hhu.terminplaner.model.gruppe;
+package de.hhu.terminplaner.domain.student;
 
 
+import de.hhu.terminplaner.stereotype.AggregateRoot;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
-class Student {
+@AggregateRoot
+public class Student {
 
+  @Id
+  private Long id;
   @NonNull
   private String githubname;
 

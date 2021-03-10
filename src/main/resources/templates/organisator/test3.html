@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{../../static/dist/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container">
+    <div id="new-order">
+
+        <h1 th:object="${uebung}"
+            th:text="*{name}">Otto Müller</h1>
+        <di>
+            <h1 th:object="${zeitslot}"
+                th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h1>
+        </di>
+        <form method="post">
+            <div class="form-group">
+                <div>
+                    <label class="mb-0" for="githubname">GithubName</label>
+                    <input class="form-control mb-2" id="githubname" name="githubname"
+                           type="text">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Hinzufügen">
+            </div>
+        </form>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Tutoren</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tutor :${zeitslot.tutoren}">
+                <td>
+                    <div th:text="${tutor.githubname}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

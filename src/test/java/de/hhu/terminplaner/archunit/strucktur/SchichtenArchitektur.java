@@ -21,12 +21,12 @@ public class SchichtenArchitektur {
 
       .layer("Controllers").definedBy("de.hhu.terminplaner.controller..")
       .layer("Services").definedBy("de.hhu.terminplaner.service..")
-      .layer("Model").definedBy("de.hhu.terminplaner.model.(*)..")
+      .layer("Domain").definedBy("de.hhu.terminplaner.domain.(*)..")
       .layer("Repositories").definedBy("de.hhu.terminplaner.repos..")
 
       .whereLayer("Controllers").mayNotBeAccessedByAnyLayer()
       .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers")
-      .whereLayer("Model").mayOnlyBeAccessedByLayers("Services")
+      .whereLayer("Domain").mayOnlyBeAccessedByLayers("Services")
       .whereLayer("Repositories").mayOnlyBeAccessedByLayers("Services")
       .because("Abhängigkeiten zwischen Schichten haben klare Richtung");
 

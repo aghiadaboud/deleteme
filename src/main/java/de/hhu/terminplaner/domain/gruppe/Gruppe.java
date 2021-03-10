@@ -1,6 +1,7 @@
-package de.hhu.terminplaner.model.gruppe;
+package de.hhu.terminplaner.domain.gruppe;
 
 
+import de.hhu.terminplaner.domain.student.Student;
 import de.hhu.terminplaner.stereotype.AggregateRoot;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,8 +21,8 @@ public class Gruppe {
   private String name;
   private Set<Student> studenden = new HashSet<>();
   private Repo repo;
-  private Integer min;
-  private Integer max;
+//  private Integer min;
+//  private Integer max;
 
   public Gruppe(@NonNull String name) {
     this.name = name;

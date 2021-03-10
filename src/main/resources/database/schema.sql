@@ -7,48 +7,39 @@ create table if not exists uebung
 (
     id               BIGINT primary key AUTO_INCREMENT,
     name             varchar(100) NOT NULL,
-    gruppenanmeldung BOOLEAN      NOT NULL
+    gruppenanmeldung BOOLEAN      NOT NULL,
+    anmeldungfristvon              DATE NOT NULL,
+    anmeldungfristbis              DATE NOT NULL
 );
 
-
-create table if not exists anmeldungfrist
-(
-    uebung           BIGINT primary key references uebung (id),
-    von              DATE NOT NULL,
-    bis              DATE NOT NULL
-);
 
 
 create table if not exists zeitslot
 (
     id         BIGINT primary key AUTO_INCREMENT,
     kapazitaet INTEGER,
+    datum DATE NOT NULL,
+    uhrzeit VARCHAR(100) NOT NULL,
+    reserviert BOOLEAN,
     uebung     BIGINT references uebung (id)
 );
 
 
 create table if not exists tutor
 (
-    tutorid         BIGINT primary key AUTO_INCREMENT,
+    id         BIGINT primary key AUTO_INCREMENT,
     githubname VARCHAR(100) NOT NULL,
     zeitslot      BIGINT references zeitslot (id)
 );
 
 
-create table if not exists organisator
-(
-    id         BIGINT primary key AUTO_INCREMENT,
-    githubname VARCHAR(100) NOT NULL
-);
+-- create table if not exists organisator
+-- (
+--     id         BIGINT primary key AUTO_INCREMENT,
+--     githubname VARCHAR(100) NOT NULL
+-- );
 
 
-create table if not exists termin
-(
-    id       BIGINT primary key AUTO_INCREMENT,
-    zeitstempel TIMESTAMP,
-    reserviert BOOLEAN,
-    zeitslot      BIGINT references zeitslot (id) on delete CASCADE
-);
 
 create table if not exists gruppe
 (
@@ -56,14 +47,14 @@ create table if not exists gruppe
     name     varchar(100) NOT NULL,
 --     min      INTEGER,
 --     max      INTEGER,
-    termin BIGINT references termin (id)
+    zeitslot      BIGINT references zeitslot (id)
 );
 
 
 
 create table if not exists student
 (
-    studentid         BIGINT primary key AUTO_INCREMENT,
+    id         BIGINT primary key AUTO_INCREMENT,
     githubname VARCHAR(100) NOT NULL,
     gruppe     BIGINT references gruppe (id)
 );

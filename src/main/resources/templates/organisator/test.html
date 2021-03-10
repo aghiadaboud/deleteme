@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{../../static/dist/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container">
+    <div id="new-order">
+        <form action="/setup" method="post" th:object="${uebung}">
+            <div class="form-group">
+                <label for="name">Uebungname:</label>
+                <input id="name" name="name" th:field="*{name}" type="text">
+                <div>
+                    <input id="Gruppenanmeldung" name="Anmeldemodus" th:field="*{gruppenanmeldung}" type="radio"
+                           value="True">
+                    <label for="Gruppenanmeldung">Gruppenanmeldung</label><br>
+                    <input id="Individualanmeldung" name="Anmeldemodus" th:field="*{gruppenanmeldung}" type="radio"
+                           value="False">
+                    <label for="Individualanmeldung">Individualanmeldung</label><br>
+                </div>
+                <div>
+                    <label for="von">Von:</label>
+                    <input id="von" name="von" th:field="*{anmeldungfristvon}" type="date">
+                    <label for="bis">Bis:</label>
+                    <input id="bis" name="bis" th:field="*{anmeldungfristbis}" type="date">
+                </div>
+
+
+                <input class="btn btn-primary" type="submit" value="Erstellen">
+            </div>
+        </form>
+
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Uebungname</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="uebung :${uebungen}">
+                <td>
+                    <a href="#" th:href="@{setup/uebung/{id}(id=${uebung.id})}"
+                       th:text="*{uebung.name}">
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

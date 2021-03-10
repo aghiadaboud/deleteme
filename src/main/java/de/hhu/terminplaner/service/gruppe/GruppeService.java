@@ -1,6 +1,6 @@
-package de.hhu.terminplaner.service;
+package de.hhu.terminplaner.service.gruppe;
 
-import de.hhu.terminplaner.model.gruppe.Gruppe;
+import de.hhu.terminplaner.domain.gruppe.Gruppe;
 import de.hhu.terminplaner.repos.GruppeRepository;
 import java.util.List;
 import java.util.Optional;

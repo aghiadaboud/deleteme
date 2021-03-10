@@ -1,13 +1,15 @@
-package de.hhu.terminplaner.model.uebung;
+package de.hhu.terminplaner.domain.uebung;
 
-import de.hhu.terminplaner.model.zeitslot.Zeitslot;
+import de.hhu.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.terminplaner.stereotype.AggregateRoot;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @NoArgsConstructor
@@ -23,12 +25,19 @@ public class Uebung {
   private String name;
   @NonNull
   private Boolean gruppenanmeldung;
-  private Anmeldungfrist anmeldungfrist;
+  @NonNull
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate anmeldungfristvon;
+  @NonNull
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate anmeldungfristbis;
 
-  public Uebung(String name, Boolean gruppenanmeldung, Anmeldungfrist anmeldungfrist) {
+  public Uebung(String name, Boolean gruppenanmeldung, @NonNull LocalDate anmeldungfristvon,
+                @NonNull LocalDate anmeldungfristbis) {
     this.name = name;
     this.gruppenanmeldung = gruppenanmeldung;
-    this.anmeldungfrist = anmeldungfrist;
+    this.anmeldungfristvon = anmeldungfristvon;
+    this.anmeldungfristbis = anmeldungfristbis;
   }
 
 
