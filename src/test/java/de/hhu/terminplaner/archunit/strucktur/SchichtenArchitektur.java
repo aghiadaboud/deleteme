@@ -19,15 +19,15 @@ public class SchichtenArchitektur {
   @ArchTest
   static final ArchRule schichten_architektur = layeredArchitecture()
 
-      .layer("Controllers").definedBy("de.hhu.terminplaner.controller..")
-      .layer("Services").definedBy("de.hhu.terminplaner.service..")
-      .layer("Domain").definedBy("de.hhu.terminplaner.domain.(*)..")
-      .layer("Repositories").definedBy("de.hhu.terminplaner.repos..")
+      .layer("UI/Controllers").definedBy("de.hhu.terminplaner.controller..")
+      .layer("Business/Services").definedBy("de.hhu.terminplaner.service..")
+      //.layer("Domain").definedBy("de.hhu.terminplaner.domain.(*)..")
+      .layer("Persistence/Repositories").definedBy("de.hhu.terminplaner.repos..")
 
-      .whereLayer("Controllers").mayNotBeAccessedByAnyLayer()
-      .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers")
-      .whereLayer("Domain").mayOnlyBeAccessedByLayers("Services")
-      .whereLayer("Repositories").mayOnlyBeAccessedByLayers("Services")
+      .whereLayer("UI/Controllers").mayNotBeAccessedByAnyLayer()
+      .whereLayer("Business/Services").mayOnlyBeAccessedByLayers("UI/Controllers")
+      //.whereLayer("Domain").mayOnlyBeAccessedByLayers("Business/Services")
+      .whereLayer("Persistence/Repositories").mayOnlyBeAccessedByLayers("Business/Services")
       .because("Abhängigkeiten zwischen Schichten haben klare Richtung");
 
 

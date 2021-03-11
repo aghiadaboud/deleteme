@@ -8,6 +8,7 @@ import de.hhu.terminplaner.service.tutor.TutorService;
 import de.hhu.terminplaner.service.uebung.UebungService;
 import de.hhu.terminplaner.service.zeitslot.ZeitslotService;
 import java.time.LocalDate;
+import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/setup")
+@Scope("session")
 public class OrganisatorController {
 
   private UebungService uebungService;
@@ -69,12 +71,6 @@ public class OrganisatorController {
                         Model model) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
-
-    System.out.println("///////////////////////////////////");
-    System.out.println(uebung);
-    System.out.println(uebungid);
-    System.out.println(zeitslot);
-    System.out.println(id);
     model.addAttribute("uebung", uebung);
     model.addAttribute("zeitslot", zeitslot);
     return "organisator/test3";
@@ -82,12 +78,12 @@ public class OrganisatorController {
 
   @PostMapping("/uebung/{uebungid}/zeitslot/{id}")
   public String placeTutor(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
-                           @ModelAttribute("tutor") Tutor tutor,
                            @RequestParam("githubname") String githubname, Model model) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
     tutorService.addTutorZUZeitslot(zeitslot, new Tutor(githubname));
     return "redirect:/setup/uebung/" + uebungid + "/zeitslot/" + id;
   }
+
 
 }
