@@ -14,10 +14,11 @@ public class TutorService {
     this.zeitslotService = zeitslotService;
   }
 
-  public void addTutorZUZeitslot(Zeitslot zeitslot, Tutor tutor) {
+  public void addTutorZuZeitslot(Zeitslot zeitslot, Tutor tutor) {
     //tutor valid??
     if (zeitslot.addTutor(tutor)) {
       zeitslotService.saveZeitslot(zeitslot);
     }
   }
+
 }

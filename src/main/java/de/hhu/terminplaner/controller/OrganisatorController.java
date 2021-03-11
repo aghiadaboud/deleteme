@@ -8,7 +8,6 @@ import de.hhu.terminplaner.service.tutor.TutorService;
 import de.hhu.terminplaner.service.uebung.UebungService;
 import de.hhu.terminplaner.service.zeitslot.ZeitslotService;
 import java.time.LocalDate;
-import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/setup")
-@Scope("session")
 public class OrganisatorController {
 
   private UebungService uebungService;
@@ -40,11 +38,12 @@ public class OrganisatorController {
   public String setup(Model model) {
     model.addAttribute("uebung", new Uebung());
     model.addAttribute("uebungen", uebungService.findAllUebungen());
-    return "organisator/test";
+    return "organisator/addUebung";
   }
 
   @PostMapping
   public String configure(@ModelAttribute("uebung") Uebung uebung) {
+    //hier muss eine createUebung methode aufgerufen, die checkt ob uebung valid, unf micht direkt saveUebung
     Uebung newUebung = uebungService.saveUebung(uebung);
     return "redirect:/setup";
   }
@@ -54,7 +53,7 @@ public class OrganisatorController {
     Uebung uebung = uebungService.findUebungById(id);
     model.addAttribute("uebung", uebung);
     model.addAttribute("zeitslots", uebung.getZeitslots());
-    return "organisator/test2";
+    return "organisator/addZeitslot";
   }
 
   @PostMapping("/uebung/{id}")
@@ -62,7 +61,9 @@ public class OrganisatorController {
                               @RequestParam("datum") @DateTimeFormat(pattern = "yyyy-MM-dd")
                                   LocalDate datum,
                               @RequestParam("uhrzeit") String uhrzeit) {
-    uebungService.addZeitslot(id, datum, uhrzeit);
+
+    Uebung uebung = uebungService.findUebungById(id);
+    zeitslotService.addZeitslotzuUebung(uebung, datum, uhrzeit);
     return "redirect:/setup/uebung/" + id;
   }
 
@@ -73,7 +74,7 @@ public class OrganisatorController {
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
     model.addAttribute("uebung", uebung);
     model.addAttribute("zeitslot", zeitslot);
-    return "organisator/test3";
+    return "organisator/addTutor";
   }
 
   @PostMapping("/uebung/{uebungid}/zeitslot/{id}")
@@ -81,7 +82,7 @@ public class OrganisatorController {
                            @RequestParam("githubname") String githubname, Model model) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
-    tutorService.addTutorZUZeitslot(zeitslot, new Tutor(githubname));
+    tutorService.addTutorZuZeitslot(zeitslot, new Tutor(githubname));
     return "redirect:/setup/uebung/" + uebungid + "/zeitslot/" + id;
   }
 

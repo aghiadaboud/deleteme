@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{../../static/dist/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container">
+    <div id="new-order">
+
+        <h1 th:object="${uebung}"
+            th:text="*{name}">Otto Müller</h1>
+        <di>
+            <h1 th:object="${zeitslot}"
+                th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h1>
+        </di>
+        <form method="post">
+            <div class="form-group">
+                <div>
+                    <label class="mb-0" for="gruppename">gruppeName</label>
+                    <input class="form-control mb-2" id="gruppename" name="gruppename"
+                           type="text">
+                </div>
+                <div>
+                    <label class="mb-0" for="githubname">StudentName</label>
+                    <input class="form-control mb-2" id="githubname" name="githubname"
+                           type="text">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Erstellen">
+            </div>
+        </form>
+
+        <div class="list-group">
+            <li class="list-group-item disabled">Gruppen</li>
+            <li th:each="gruppe : ${zeitslot.gruppen}">
+                <span th:text="${gruppe.name}"></span>
+                <form method="post" style="display:inline!important;"
+                      th:action="@{{zeitslotid}/gruppe/{id}
+                      (id=${gruppe.id}, zeitslotid=${zeitslot.id})}">
+                    <!-- <input name="id" th:value="${gruppe.id}" type="hidden">-->
+                    <input id="studentgithubname" name="studentgithubname" type="text">
+                    <button class="delete" type="submit">Student Hinzufügen</button>
+                </form>
+            </li>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

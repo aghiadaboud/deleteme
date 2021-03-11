@@ -11,11 +11,9 @@
 <div class="container">
     <div id="new-order">
 
-        <h1 th:object="${uebung}"
-            th:text="*{name}">Otto Müller</h1>
+        <h1 th:text="${uebung.name}">Otto Müller</h1>
         <di>
-            <h1 th:object="${zeitslot}"
-                th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h1>
+            <h1 th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h1>
         </di>
         <form method="post">
             <div class="form-group">

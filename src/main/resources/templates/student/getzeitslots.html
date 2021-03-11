@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{../../static/dist/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+    <div id="new-order">
+
+        <h1 th:object="${uebung}"
+            th:text="*{name}">Otto Müller</h1>
+
+        <div class="list-group">
+            <li class="list-group-item disabled">Zeitslots</li>
+            <li th:each="zeitslot :${uebung.zeitslots}">
+                <a href="#"
+                   th:href="@{{uebungid}/zeitslot/{id}(id=${zeitslot.id}, uebungid=${uebung.id})}"
+                   th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">
+                </a>
+            </li>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

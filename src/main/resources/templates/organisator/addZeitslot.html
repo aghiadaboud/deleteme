@@ -37,10 +37,6 @@
             <tbody>
             <tr th:each="zeitslot :${zeitslots}">
                 <td>
-                    <!--                    <a href="#"-->
-                    <!--                       th:href="@{setup/uebung/{uebungid}/termin/{id}(uebungid=${uebung.id}, id=${zeitslot.id})}"-->
-                    <!--                       th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">-->
-                    <!--                    </a>-->
                     <a href="#"
                        th:href="@{{uebungid}/zeitslot/{id}(id=${zeitslot.id}, uebungid=${uebung.id})}"
                        th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">

@@ -4,8 +4,10 @@ import de.hhu.terminplaner.domain.uebung.Uebung;
 import de.hhu.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.terminplaner.repos.UebungRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -42,19 +44,35 @@ public class UebungService {
   }
 
 
-//  public void addZeitslot(Long uebungid, @NonNull Zeitslot zeitslot) throws NullPointerException {
-//    Uebung uebung = findUebungById(uebungid);
-//    uebung.getZeitslots().add(zeitslot);
-//    uebungRepository.save(uebung);
-//  }
+  public List<Zeitslot> getAllZeitslotOfUebung(Uebung uebung) {
+    List<Zeitslot> zeitslots = new ArrayList<>();
+    uebung.getZeitslots().forEach(zeitslot -> zeitslots.add(zeitslot));
+    return zeitslots;
+  }
+
+  public Optional<List<Zeitslot>> getAllFreieZeitslotOfUebung(Uebung uebung) {
+    List<Zeitslot> zeitslots = getAllZeitslotOfUebung(uebung);
+    List<Zeitslot> freieZeitslots =
+        zeitslots.stream()
+            .filter(zeitslot -> !zeitslot.getReserviert())
+            .collect(Collectors.toList());
+    if (freieZeitslots.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(freieZeitslots);
+  }
 
 
-  public void addZeitslot(Long uebungid, LocalDate datum, String uhrzeit)
-      throws NullPointerException {
-    Uebung uebung = findUebungById(uebungid);
-    Zeitslot zeitslot = new Zeitslot(datum, uhrzeit);
-    uebung.addZeitslot(zeitslot);
-    uebungRepository.save(uebung);
+  public Optional<List<Zeitslot>> getAllReservierteZeitslots(Uebung uebung) {
+    List<Zeitslot> zeitslots = getAllZeitslotOfUebung(uebung);
+    List<Zeitslot> reservierteZeitslots =
+        zeitslots.stream()
+            .filter(zeitslot -> zeitslot.getReserviert())
+            .collect(Collectors.toList());
+    if (reservierteZeitslots.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(reservierteZeitslots);
   }
 
   public void updateName(Long uebungid, @NonNull String newName) {
@@ -71,7 +89,6 @@ public class UebungService {
   }
 
   public Uebung saveUebung(Uebung uebung) {
-    //valid uebung?
     uebungRepository.save(uebung);
     return uebung;
   }

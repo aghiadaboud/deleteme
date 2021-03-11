@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{../../static/dist/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+    <div id="new-order">
+
+        <div class="list-group">
+            <li class="list-group-item disabled">Uebungen</li>
+            <li th:each="uebung :${uebungen}">
+                <a href="#" th:href="@{student/uebung/{id}(id=${uebung.id})}"
+                   th:text="*{uebung.name}">
+                </a>
+            </li>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
