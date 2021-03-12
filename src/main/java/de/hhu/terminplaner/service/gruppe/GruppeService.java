@@ -6,7 +6,9 @@ import de.hhu.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.terminplaner.repos.GruppeRepository;
 import de.hhu.terminplaner.service.zeitslot.ZeitslotService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +28,20 @@ public class GruppeService {
     return gruppeRepository.findAll();
   }
 
-  public void addGruppeZuZeitslot(Zeitslot zeitslot, Gruppe gruppe) {
-    //gruppe valid??
-    if (zeitslot.addGruppe(gruppe)) {
+  public Map<Boolean, String> addGruppeZuZeitslot(Zeitslot zeitslot, Gruppe gruppe) {
+    Map<Boolean, String> nachricht = new HashMap<>();
+//    gruppe valid??
+//    if (!validGruppe(gruppe)) {
+//      return nachricht.put(false, "Gruppeinfos sind nicht gültig");
+//    }
+    if (zeitslot.getKapazitaet() > 0) {
+      zeitslot.addGruppe(gruppe);
       zeitslotService.saveZeitslot(zeitslot);
+      nachricht.put(true, "Gruppe wurde erfolgreich hinzugefügt");
+      return nachricht;
     }
+    nachricht.put(false, "Dieser Termin ist reserviert");
+    return nachricht;
   }
 
   public List<Student> getAllGruppenmitglieder(Gruppe gruppe) {

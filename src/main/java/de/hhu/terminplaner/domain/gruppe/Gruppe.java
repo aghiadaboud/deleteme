@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 @Data
 @NoArgsConstructor
@@ -23,8 +24,10 @@ public class Gruppe {
   private Set<Student> studenten = new HashSet<>();
   private Repo repo;
   private Tutor tutor;
-//  private Integer min;
-//  private Integer max;
+  @Transient
+  private Integer min;
+  @Transient
+  private Integer max;
 
   public Gruppe(@NonNull String name) {
     this.name = name;

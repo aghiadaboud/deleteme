@@ -86,5 +86,23 @@ public class OrganisatorController {
     return "redirect:/setup/uebung/" + uebungid + "/zeitslot/" + id;
   }
 
+//  @GetMapping("/uebung/{uebungid}/zeitslot/{id}")
+//  public String tutoren(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
+//                        Model model) {
+//    Uebung uebung = uebungService.findUebungById(uebungid);
+//    Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
+//    model.addAttribute("tutorform", new TutorForm());
+//    model.addAttribute("uebung", uebung);
+//    model.addAttribute("zeitslot", zeitslot);
+//    return "organisator/addTutor";
+//  }
+//
+//  @PostMapping("/uebung/{uebungid}/zeitslot/{id}")
+//  public String placeTutor(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
+//                           @ModelAttribute("tutor") TutorForm tutorForm) {
+//    Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
+//    tutorService.addTutorZuZeitslot(zeitslot, new Tutor(tutorForm.getName()));
+//    return "redirect:/setup/uebung/" + uebungid + "/zeitslot/" + id;
+//  }
 
 }

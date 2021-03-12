@@ -8,7 +8,9 @@ import de.hhu.terminplaner.repos.ZeitslotRepository;
 import de.hhu.terminplaner.service.uebung.UebungService;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +31,20 @@ public class ZeitslotService {
   }
 
 
-  public void addZeitslotzuUebung(Uebung uebung, LocalDate datum, String uhrzeit) {
+  public Map<Boolean, String> addZeitslotzuUebung(Uebung uebung, LocalDate datum, String uhrzeit) {
+    Map<Boolean, String> nachricht = new HashMap<>();
+//    zeitslot valid??liegt nach Anmeldungsfrist?
+//        if (!validZeitslot(zeitslot)) {
+//      return nachricht.put(false, "Termininfos sind nicht gültig");
+//    }
     Zeitslot zeitslot = new Zeitslot(datum, uhrzeit);
-    //zeitslot valid??
     if (uebung.addZeitslot(zeitslot)) {
       uebungService.saveUebung(uebung);
+      nachricht.put(true, "Termin wurde erfolgreich hinzugefügt");
+      return nachricht;
     }
+    nachricht.put(false, "Termin konnte nicht hinzugefügt werden");
+    return nachricht;
   }
 
   public List<Gruppe> getAllGruppenOfZeitslot(Zeitslot zeitslot) {

@@ -57,20 +57,22 @@ public class StudentController {
   }
 
   @GetMapping("/uebung/{uebungid}/zeitslot/{id}")
-  public String tutoren(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
-                        Model model) {
+  public String getGruppenUebersicht(@PathVariable("uebungid") Long uebungid,
+                                     @PathVariable("id") Long id,
+                                     Model model) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
     model.addAttribute("gruppe", new Gruppe());
     model.addAttribute("uebung", uebung);
     model.addAttribute("zeitslot", zeitslot);
+    //model.addAttribute("gruppen", zeitslotService.getFreieGruppenofZeitslot(zeitslot));
     return "student/addGruppe";
   }
 
   @PostMapping("/uebung/{uebungid}/zeitslot/{id}")
-  public String placeTutor(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
-                           @RequestParam("gruppename") String gruppename,
-                           @RequestParam("githubname") String githubname) {
+  public String placeGruppe(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
+                            @RequestParam("gruppename") String gruppename,
+                            @RequestParam("githubname") String githubname) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
     Gruppe gruppe = new Gruppe(gruppename);
@@ -81,12 +83,13 @@ public class StudentController {
   }
 
   @PostMapping("/uebung/{uebungid}/zeitslot/{zeitslotid}/gruppe/{id}")
-  public String placeTutor(@PathVariable("uebungid") Long uebungid,
-                           @PathVariable("zeitslotid") Long zeitslotid,
-                           @PathVariable("id") Long id,
-                           @RequestParam("studentgithubname") String studentgithubname) {
+  public String placeGruppeStudent(@PathVariable("uebungid") Long uebungid,
+                                   @PathVariable("zeitslotid") Long zeitslotid,
+                                   @PathVariable("id") Long id,
+                                   @RequestParam("studentgithubname") String studentgithubname,
+                                   Model model) {
     Uebung uebung = uebungService.findUebungById(uebungid);
-    Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
+    Zeitslot zeitslot = zeitslotService.findZeitslotById(zeitslotid);
     Gruppe gruppe = gruppeService.findGruppeById(id);
     studentService.addStudentZuGruppe(gruppe, new Student(studentgithubname));
     return "redirect:/student/uebung/" + uebungid + "/zeitslot/" + zeitslotid;
