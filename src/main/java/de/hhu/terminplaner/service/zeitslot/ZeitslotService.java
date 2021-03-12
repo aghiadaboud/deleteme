@@ -30,15 +30,31 @@ public class ZeitslotService {
     return zeitslotRepository.findAll();
   }
 
-
   public Map<Boolean, String> addZeitslotzuUebung(Uebung uebung, LocalDate datum, String uhrzeit) {
+    if (uebung.getGruppenanmeldung()) {
+      return addZeitslotzuUebungAndGruppeBeiIndividualanmeldung(uebung, datum, uhrzeit,
+          Optional.empty());
+    } else {
+      Gruppe gruppe = new Gruppe("Gruppe-" + datum.toString() + "-" + uhrzeit);
+      return addZeitslotzuUebungAndGruppeBeiIndividualanmeldung(uebung, datum, uhrzeit,
+          Optional.of(gruppe));
+    }
+  }
+
+
+  private Map<Boolean, String> addZeitslotzuUebungAndGruppeBeiIndividualanmeldung(Uebung uebung,
+                                                                                  LocalDate datum,
+                                                                                  String uhrzeit,
+                                                                                  Optional<Gruppe> gruppe) {
     Map<Boolean, String> nachricht = new HashMap<>();
 //    zeitslot valid??liegt nach Anmeldungsfrist?
 //        if (!validZeitslot(zeitslot)) {
 //      return nachricht.put(false, "Termininfos sind nicht gültig");
 //    }
     Zeitslot zeitslot = new Zeitslot(datum, uhrzeit);
-    if (uebung.addZeitslot(zeitslot)) {
+    gruppe.ifPresent(zeitslot::addGruppe);
+    boolean addedZeitslot = uebung.addZeitslot(zeitslot);
+    if (addedZeitslot) {
       uebungService.saveUebung(uebung);
       nachricht.put(true, "Termin wurde erfolgreich hinzugefügt");
       return nachricht;
@@ -49,13 +65,13 @@ public class ZeitslotService {
 
   public List<Gruppe> getAllGruppenOfZeitslot(Zeitslot zeitslot) {
     List<Gruppe> gruppen = new ArrayList<>();
-    zeitslot.getGruppen().forEach(gruppe -> gruppen.add(gruppe));
+    gruppen.addAll(zeitslot.getGruppen());
     return gruppen;
   }
 
   public List<Tutor> getAllTutorOfZeitslot(Zeitslot zeitslot) {
     List<Tutor> tutoren = new ArrayList<>();
-    zeitslot.getTutoren().forEach(tutor -> tutoren.add(tutor));
+    tutoren.addAll(zeitslot.getTutoren());
     return tutoren;
   }
 
@@ -78,5 +94,9 @@ public class ZeitslotService {
 
   public void saveZeitslot(Zeitslot zeitslot) {
     zeitslotRepository.save(zeitslot);
+  }
+
+  public int studentenKapazitaetofZeitslotForIndividualanmeldung(Zeitslot zeitslot) {
+    return zeitslot.tutorenAnzahl() * 5;
   }
 }

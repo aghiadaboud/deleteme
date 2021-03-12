@@ -56,7 +56,11 @@ public class Zeitslot {
 //    return false;
 //  }
 
-  public void increaseKapazitaet(Integer number) {
+  public void decreaseKapazitaet(int number) {
+    this.kapazitaet -= number;
+  }
+
+  public void increaseZeitslotKapazitaet(Integer number) {
     this.kapazitaet += number;
   }
 

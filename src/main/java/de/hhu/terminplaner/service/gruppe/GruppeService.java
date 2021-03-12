@@ -28,19 +28,34 @@ public class GruppeService {
     return gruppeRepository.findAll();
   }
 
+
   public Map<Boolean, String> addGruppeZuZeitslot(Zeitslot zeitslot, Gruppe gruppe) {
     Map<Boolean, String> nachricht = new HashMap<>();
-//    gruppe valid??
-//    if (!validGruppe(gruppe)) {
-//      return nachricht.put(false, "Gruppeinfos sind nicht gültig");
-//    }
-    if (zeitslot.getKapazitaet() > 0) {
-      zeitslot.addGruppe(gruppe);
-      zeitslotService.saveZeitslot(zeitslot);
-      nachricht.put(true, "Gruppe wurde erfolgreich hinzugefügt");
+    int zeitslotKapazitaet = zeitslot.getKapazitaet();
+    if (zeitslotKapazitaet == 0) {
+      nachricht.put(false, "Dieser Termin ist reserviert");
       return nachricht;
+    } else if (zeitslotKapazitaet == 1) {
+      return addGruppeZuZeitslotAndDecreaseKapazitaet(zeitslot, gruppe, true);
+    } else {
+      return addGruppeZuZeitslotAndDecreaseKapazitaet(zeitslot, gruppe, false);
     }
-    nachricht.put(false, "Dieser Termin ist reserviert");
+  }
+
+
+  private Map<Boolean, String> addGruppeZuZeitslotAndDecreaseKapazitaet(Zeitslot zeitslot,
+                                                                        Gruppe gruppe,
+                                                                        boolean reserviert) {
+    Map<Boolean, String> nachricht = new HashMap<>();
+    //    gruppe valid??
+    //    if (!validGruppe(gruppe)) {
+    //      return nachricht.put(false, "Gruppeinfos sind nicht gültig");
+    //    }
+    zeitslot.addGruppe(gruppe);
+    zeitslot.decreaseKapazitaet(1);
+    zeitslot.setReserviert(reserviert);
+    zeitslotService.saveZeitslot(zeitslot);
+    nachricht.put(true, "Gruppe erfolgreich hinzugefügt");
     return nachricht;
   }
 

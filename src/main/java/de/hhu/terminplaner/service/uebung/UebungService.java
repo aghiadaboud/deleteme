@@ -46,20 +46,17 @@ public class UebungService {
 
   public List<Zeitslot> getAllZeitslotOfUebung(Uebung uebung) {
     List<Zeitslot> zeitslots = new ArrayList<>();
-    uebung.getZeitslots().forEach(zeitslot -> zeitslots.add(zeitslot));
+    zeitslots.addAll(uebung.getZeitslots());
     return zeitslots;
   }
 
-  public Optional<List<Zeitslot>> getAllFreieZeitslotOfUebung(Uebung uebung) {
+  public List<Zeitslot> getAllFreieZeitslotOfUebung(Uebung uebung) {
     List<Zeitslot> zeitslots = getAllZeitslotOfUebung(uebung);
     List<Zeitslot> freieZeitslots =
         zeitslots.stream()
             .filter(zeitslot -> !zeitslot.getReserviert())
             .collect(Collectors.toList());
-    if (freieZeitslots.isEmpty()) {
-      return Optional.empty();
-    }
-    return Optional.of(freieZeitslots);
+    return freieZeitslots;
   }
 
 
@@ -75,11 +72,6 @@ public class UebungService {
     return Optional.of(reservierteZeitslots);
   }
 
-  public void updateName(Long uebungid, @NonNull String newName) {
-    Uebung uebung = findUebungById(uebungid);
-    uebung.setName(newName);
-    uebungRepository.save(uebung);
-  }
 
   public void deleteZeitslot(Long uebungid, @NonNull Zeitslot zeitslot)
       throws NullPointerException {

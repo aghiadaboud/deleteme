@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
     <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
           th:href="@{../../static/dist/css/bootstrap.min.css}">
 </head>
 <body>
 <div class="container">
-    <div id="new-order">
-
+    <div id="zetslots">
+        <div style="margin-top:50px"></div>
         <h1 th:object="${uebung}"
             th:text="*{name}">Otto Müller</h1>
 
         <div class="list-group">
             <li class="list-group-item disabled">Zeitslots</li>
-            <li th:each="zeitslot :${uebung.zeitslots}">
+            <li th:each="zeitslot :${zeitslots}">
                 <a href="#"
                    th:href="@{{uebungid}/zeitslot/{id}(id=${zeitslot.id}, uebungid=${uebung.id})}"
                    th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">
@@ -24,7 +26,10 @@
         </div>
     </div>
 
+    <div>
+        <a th:href="@{/student/uebung/{id}/oeffeneplaetze(id=${uebung.id})}">zeige die öffenen Plätze</a>
+    </div>
 </div>
-
+<div style="margin-top:50px"></div>
 </body>
 </html>
