@@ -16,4 +16,7 @@ public interface GruppeRepository extends CrudRepository<Gruppe, Long> {
 
   @Query("Select * FROM GRUPPE WHERE name = :name")
   Optional<Gruppe> findGruppeByName(@Param("name") String name);
+
+  @Query("Select zeitslot FROM GRUPPE WHERE id = :id")
+  Long findZeitslotIdByGruppeId(@Param("id") Long id);
 }

@@ -1,9 +1,12 @@
 package de.hhu.propra.terminplaner.controller;
 
 
+import de.hhu.propra.terminplaner.domain.gruppe.Gruppe;
 import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
+import de.hhu.propra.terminplaner.service.gruppe.GruppeService;
+import de.hhu.propra.terminplaner.service.student.StudentService;
 import de.hhu.propra.terminplaner.service.tutor.TutorService;
 import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
@@ -27,13 +30,19 @@ public class OrganisatorController {
   private UebungService uebungService;
   private ZeitslotService zeitslotService;
 
+  private GruppeService gruppeService;
+
   private TutorService tutorService;
+  private StudentService studentService;
 
   public OrganisatorController(UebungService uebungService, ZeitslotService zeitslotService,
-                               TutorService tutorService) {
+                               TutorService tutorService, GruppeService gruppeService,
+                               StudentService studentService) {
     this.uebungService = uebungService;
     this.zeitslotService = zeitslotService;
     this.tutorService = tutorService;
+    this.gruppeService = gruppeService;
+    this.studentService = studentService;
   }
 
   @GetMapping
@@ -112,6 +121,45 @@ public class OrganisatorController {
 //    tutorService.addTutorZuZeitslot(zeitslot, new Tutor(tutorForm.getName()));
 //    return "redirect:/setup/uebung/" + uebungid + "/zeitslot/" + id;
 //  }
+
+
+  @GetMapping("/uebung/{uebungid}/edit")
+  public String editUebung(@PathVariable("uebungid") Long uebungid,
+                           Model model) {
+    Uebung uebung = uebungService.findUebungById(uebungid);
+    model.addAttribute("uebung", uebung);
+    return "organisator/editUebung";
+  }
+
+  @PostMapping("/uebung/{uebungid}/removegruppe")
+  public String removeGruppe(@PathVariable("uebungid") Long uebungid,
+                             @RequestParam("zeitslotid") Long zeitslotid,
+                             @RequestParam("gruppeid") Long gruppeid,
+                             RedirectAttributes redirectAttributes) {
+    Zeitslot zeitslot = zeitslotService.findZeitslotById(zeitslotid);
+    Gruppe gruppe = gruppeService.findGruppeById(gruppeid);
+    Map<Boolean, String> deleteGruppe = gruppeService.deleteGruppe(zeitslot, gruppe);
+    checkResultAndSetupMessage(redirectAttributes, deleteGruppe);
+    return "redirect:/setup/uebung/" + uebungid + "/edit";
+  }
+
+  //deleteStudent muss noch implementiert
+  @PostMapping("/uebung/{uebungid}/movestudent")
+  public String moveStudent(@PathVariable("uebungid") Long uebungid,
+                            @RequestParam("zeitslotidold") Long zeitslotidold,
+                            @RequestParam("gruppeidold") Long gruppeidold,
+                            @RequestParam("gruppeidnew") Long gruppeidnew,
+                            @RequestParam("studentid") Long studentid,
+                            RedirectAttributes redirectAttributes) {
+    Zeitslot oldZeitslot = zeitslotService.findZeitslotById(zeitslotidold);
+    Gruppe oldGruppe = gruppeService.findGruppeById(gruppeidold);
+    Zeitslot newZeitslot = zeitslotService.findZeitslotByGruppeId(gruppeidnew);
+    Gruppe newGruppe = gruppeService.findGruppeById(gruppeidnew);
+    Map<Boolean, String> moved =
+        studentService.moveStudent(oldZeitslot, newZeitslot, oldGruppe, newGruppe, studentid);
+    checkResultAndSetupMessage(redirectAttributes, moved);
+    return "redirect:/setup/uebung/" + uebungid + "/edit";
+  }
 
   private void checkResultAndSetupMessage(RedirectAttributes redirectAttributes,
                                           Map<Boolean, String> addedGruppeZuZeitslot) {

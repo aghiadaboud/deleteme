@@ -4,6 +4,7 @@ import de.hhu.propra.terminplaner.domain.gruppe.Gruppe;
 import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
+import de.hhu.propra.terminplaner.repos.GruppeRepository;
 import de.hhu.propra.terminplaner.repos.ZeitslotRepository;
 import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import java.time.LocalDate;
@@ -18,12 +19,15 @@ import org.springframework.stereotype.Service;
 public class ZeitslotService {
 
   private ZeitslotRepository zeitslotRepository;
+  private GruppeRepository gruppeRepository;
 
   private UebungService uebungService;
 
-  public ZeitslotService(ZeitslotRepository zeitslotRepository, UebungService uebungService) {
+  public ZeitslotService(ZeitslotRepository zeitslotRepository, UebungService uebungService,
+                         GruppeRepository gruppeRepository) {
     this.zeitslotRepository = zeitslotRepository;
     this.uebungService = uebungService;
+    this.gruppeRepository = gruppeRepository;
   }
 
   public List<Zeitslot> findAll() {
@@ -108,5 +112,15 @@ public class ZeitslotService {
     zeitslot.decreaseKapazitaet(platz);
     reserviert.ifPresent(zeitslot::setReserviert);
     zeitslotRepository.save(zeitslot);
+  }
+
+  public void increaseKapazitaetAndMakeItAvailable(Zeitslot zeitslot, int platz) {
+    zeitslot.increaseZeitslotKapazitaet(1);
+    zeitslot.setReserviert(false);
+  }
+
+  public Zeitslot findZeitslotByGruppeId(Long gruppeid) {
+    Long id = gruppeRepository.findZeitslotIdByGruppeId(gruppeid);
+    return findZeitslotById(id);
   }
 }

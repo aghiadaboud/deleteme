@@ -27,17 +27,19 @@
 
         <div class="list-group" th:each="zeitslot : ${uebung.zeitslots}">
             <!--            <li><h3 th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h3></li>-->
-            <li class="list-group-item disabled">Gruppen</li>
-            <li th:each="gruppe : ${zeitslot.gruppen}">
-                <span th:text="${gruppe.name}"></span>
-                <span th:text="|(hat ${gruppe.size()} Mitglieder)|"></span>
-                <form method="post" style="display:inline!important;">
-                    <input name="zeitslotid" th:value="${zeitslot.id}" type="hidden">
-                    <input name="gruppeid" th:value="${gruppe.id}" type="hidden">
-                    <input id="studentgithubname" name="studentgithubname" type="text">
-                    <button class="delete" type="submit">Student Hinzufügen</button>
-                </form>
-            </li>
+            <ul class="list-group">
+                <li class="list-group-item disabled">Gruppen</li>
+                <li th:each="gruppe : ${zeitslot.gruppen}">
+                    <span th:text="${gruppe.name}"></span>
+                    <span th:text="|(hat ${gruppe.size()} Mitglieder)|"></span>
+                    <form method="post" style="display:inline!important;">
+                        <input name="zeitslotid" th:value="${zeitslot.id}" type="hidden">
+                        <input name="gruppeid" th:value="${gruppe.id}" type="hidden">
+                        <input id="studentgithubname" name="studentgithubname" type="text">
+                        <button class="delete" type="submit">Student Hinzufügen</button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
 

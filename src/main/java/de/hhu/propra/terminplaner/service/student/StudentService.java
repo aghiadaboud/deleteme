@@ -21,44 +21,20 @@ public class StudentService {
     this.zeitslotService = zeitslotService;
   }
 
-//  public Map<Boolean, String> checkAnmeldungmodusAndaddStudentZuGruppe(Zeitslot zeitslot,
-//                                                                       Gruppe gruppe,
-//                                                                       Student student,
-//                                                                       boolean gruppenAnmeldung) {
-//    int anzahlErlaubteMitgliederIndividualanmeldung =
-//        zeitslotService.studentenKapazitaetofZeitslotForIndividualanmeldung(zeitslot);
-//    if (gruppenAnmeldung) {
-//      return addStudentZuGruppeAndUpdateZeitslot(zeitslot, gruppe, student, 5, 0);
-//    } else {
-//      return addStudentZuGruppeAndUpdateZeitslot(zeitslot, gruppe, student,
-//          anzahlErlaubteMitgliederIndividualanmeldung, 1);
-//    }
-//  }
-//
-//
-//  private Map<Boolean, String> addStudentZuGruppeAndUpdateZeitslot(Zeitslot zeitslot, Gruppe gruppe,
-//                                                                   Student student,
-//                                                                   int erlaubteGruppengroesse,
-//                                                                   int platz) {
-//    Map<Boolean, String> nachricht = new HashMap<>();
-////    student valid??
-////        if (!validStudent(student)) {
-////      return nachricht.put(false, "Studentinfos sind nicht gültig");
-////    }
-//    if (gruppe.size() < erlaubteGruppengroesse) {
-//      gruppe.addStudent(student);
-//      zeitslot.decreaseKapazitaet(platz);
-//      if (zeitslot.getKapazitaet() == 0) {
-//        zeitslot.setReserviert(true);
-//      }
-//      zeitslotService.saveZeitslot(zeitslot);
-//      gruppeService.saveGruppe(gruppe);
-//      nachricht.put(true, "Student wurde erfolgreich hinzugefügt");
-//      return nachricht;
-//    }
-//    nachricht.put(false, "Diese Gruppe ist voll");
-//    return nachricht;
-//  }
+
+  public Student findStudentById(Gruppe gruppe, Long id) {
+    Optional<Student> student =
+        gruppe.getStudenten().stream().filter(x -> x.getId().compareTo(id) == 0)
+            .findAny();
+    if (student.isPresent()) {
+      return student.get();
+    } else {
+      throw new NullPointerException("kein Student für diese ID vorhanden");
+    }
+    //        return gruppeRepository.findById(id).orElseThrow(() ->
+//                 new ResponseStatusException(NOT_FOUND, "Keine Student mit id " + id + " vorhanden."));
+
+  }
 
 
   public Map<Boolean, String> checkAnmeldungmodusAndaddStudentZuGruppe(Zeitslot zeitslot,
@@ -112,6 +88,26 @@ public class StudentService {
       return nachricht;
     }
     nachricht.put(false, "Diese Gruppe ist voll");
+    return nachricht;
+  }
+
+  //Diese Methode muss nur nach Anmeldungsfrist von Jens aufgerüft werden können.
+  public Map<Boolean, String> moveStudent(Zeitslot oldZeitslot, Zeitslot newZeitslot,
+                                          Gruppe oldGruppe, Gruppe newGruppe, Long studentid) {
+    //ist die Anmeldungsfrist vorbei?
+    //Für Individual Anmeldung kann die Methode nach Studenten Verteilung benutzt werden!!
+    Map<Boolean, String> nachricht = new HashMap<>();
+    Student student = findStudentById(oldGruppe, studentid);
+    boolean nochFreiePlaetze = newGruppe.size() < 5;
+    if (nochFreiePlaetze) {
+      oldGruppe.removeStudent(student);
+      newGruppe.addStudent(student);
+      gruppeService.saveGruppe(oldGruppe);
+      gruppeService.saveGruppe(newGruppe);
+      nachricht.put(true, "Student wurde erfolgreich verschoben");
+      return nachricht;
+    }
+    nachricht.put(false, "Student kann nicht verschoben werden");
     return nachricht;
   }
 }

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -66,6 +67,20 @@ public class GruppeService {
     List<Student> studenten = new ArrayList<>();
     gruppe.getStudenten().forEach(student -> studenten.add(student));
     return studenten;
+  }
+
+  public Map<Boolean, String> deleteGruppe(Zeitslot zeitslot, Gruppe gruppe) {
+    Map<Boolean, String> nachricht = new HashMap<>();
+    Set<Gruppe> gruppen = zeitslot.getGruppen();
+    boolean deleted = gruppen.remove(gruppe);
+    if (deleted) {
+      zeitslotService.increaseKapazitaetAndMakeItAvailable(zeitslot, 1);
+      zeitslotService.saveZeitslot(zeitslot);
+      nachricht.put(true, "Gruppe wurde gelöscht");
+      return nachricht;
+    }
+    nachricht.put(true, "Gruppe konnte nicht gelöscht werden");
+    return nachricht;
   }
 
   public int countStudenten(Long id) {

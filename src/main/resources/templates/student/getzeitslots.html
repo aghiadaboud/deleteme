@@ -16,13 +16,15 @@
             th:text="*{name}">Otto Müller</h1>
 
         <div class="list-group">
-            <li class="list-group-item disabled">Zeitslots</li>
-            <li th:each="zeitslot :${zeitslots}">
-                <a href="#"
-                   th:href="@{{uebungid}/zeitslot/{id}(id=${zeitslot.id}, uebungid=${uebung.id})}"
-                   th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">
-                </a>
-            </li>
+            <ul class="list-group">
+                <li class="list-group-item disabled">Zeitslots</li>
+                <li th:each="zeitslot :${zeitslots}">
+                    <a href="#"
+                       th:href="@{{uebungid}/zeitslot/{id}(id=${zeitslot.id}, uebungid=${uebung.id})}"
+                       th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 

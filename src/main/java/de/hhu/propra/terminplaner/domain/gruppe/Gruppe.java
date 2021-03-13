@@ -40,4 +40,8 @@ public class Gruppe {
   public boolean addStudent(Student student) {
     return this.studenten.add(student);
   }
+
+  public boolean removeStudent(Student student) {
+    return this.studenten.remove(student);
+  }
 }
