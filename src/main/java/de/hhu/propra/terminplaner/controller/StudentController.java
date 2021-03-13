@@ -113,7 +113,7 @@ public class StudentController {
     Arrays.stream(gruppeForm.getStudenten()).filter(x -> !x.getGithubname().isBlank())
         .forEach(gruppe::addStudent);
     Map<Boolean, String> addedGruppeZuZeitslot =
-        gruppeService.addGruppeZuZeitslot(zeitslot, gruppe);
+        gruppeService.checkZeitslotZustandAndaddGruppeZuZeitslot(zeitslot, gruppe);
     checkResultAndSetupMessage(redirectAttributes, addedGruppeZuZeitslot);
     return "redirect:/student/uebung/" + uebungid + "/zeitslot/" + id;
   }
@@ -137,7 +137,8 @@ public class StudentController {
     Zeitslot zeitslot = zeitslotService.findZeitslotById(zeitslotid);
     Gruppe gruppe = gruppeService.findGruppeById(gruppeid);
     Map<Boolean, String> addedStudentZuGruppe =
-        studentService.addStudentZuGruppe(zeitslot, gruppe, new Student(studentgithubname),
+        studentService.checkAnmeldungmodusAndaddStudentZuGruppe(zeitslot, gruppe,
+            new Student(studentgithubname),
             uebung.getGruppenanmeldung());
     checkResultAndSetupMessage(redirectAttributes, addedStudentZuGruppe);
     return "redirect:/student/uebung/" + uebungid + "/oeffeneplaetze";

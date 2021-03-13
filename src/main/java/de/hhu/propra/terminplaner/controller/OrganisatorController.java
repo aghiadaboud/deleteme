@@ -66,7 +66,7 @@ public class OrganisatorController {
                               RedirectAttributes redirectAttributes) {
     Uebung uebung = uebungService.findUebungById(id);
     Map<Boolean, String> addZeitslotzuUebung =
-        zeitslotService.addZeitslotzuUebung(uebung, datum, uhrzeit);
+        zeitslotService.checkAnmeldungmodusAndaddZeitslotzuUebung(uebung, datum, uhrzeit);
     checkResultAndSetupMessage(redirectAttributes, addZeitslotzuUebung);
     return "redirect:/setup/uebung/" + id;
   }
@@ -88,7 +88,8 @@ public class OrganisatorController {
     Uebung uebung = uebungService.findUebungById(uebungid);
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
     Map<Boolean, String> addTutorZuZeitslot = tutorService
-        .addTutorZuZeitslot(zeitslot, new Tutor(githubname), uebung.getGruppenanmeldung());
+        .checkAnmeldungmodusAndaddTutorZuZeitslot(zeitslot, new Tutor(githubname),
+            uebung.getGruppenanmeldung());
     checkResultAndSetupMessage(redirectAttributes, addTutorZuZeitslot);
     return "redirect:/setup/uebung/" + uebungid + "/zeitslot/" + id;
   }
