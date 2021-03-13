@@ -16,7 +16,7 @@ public class TutorService {
     this.zeitslotService = zeitslotService;
   }
 
-  public Map<Boolean, String> addTutorZuZeitslot(
+  public Map<Boolean, String> checkAnmeldungmodusAndaddTutorZuZeitslot(
       Zeitslot zeitslot, Tutor tutor, boolean gruppenAnmeldung) {
     if (gruppenAnmeldung) {
       return addTutorZuZeitslotAndIncreaseKapazitaet(zeitslot, tutor, 1);

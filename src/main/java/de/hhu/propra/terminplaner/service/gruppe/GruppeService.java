@@ -29,7 +29,8 @@ public class GruppeService {
   }
 
 
-  public Map<Boolean, String> addGruppeZuZeitslot(Zeitslot zeitslot, Gruppe gruppe) {
+  public Map<Boolean, String> checkZeitslotZustandAndaddGruppeZuZeitslot(Zeitslot zeitslot,
+                                                                         Gruppe gruppe) {
     Map<Boolean, String> nachricht = new HashMap<>();
     int zeitslotKapazitaet = zeitslot.getKapazitaet();
     if (zeitslotKapazitaet == 0) {
@@ -52,9 +53,11 @@ public class GruppeService {
     //      return nachricht.put(false, "Gruppeinfos sind nicht gültig");
     //    }
     zeitslot.addGruppe(gruppe);
-    zeitslot.decreaseKapazitaet(1);
-    zeitslot.setReserviert(reserviert);
-    zeitslotService.saveZeitslot(zeitslot);
+//    zeitslot.decreaseKapazitaet(1);
+//    zeitslot.setReserviert(reserviert);
+//    zeitslotService.saveZeitslot(zeitslot);
+    zeitslotService
+        .decreaseZeitslotKapazitaetAndUpdateZustand(zeitslot, 1, Optional.of(reserviert));
     nachricht.put(true, "Gruppe erfolgreich hinzugefügt");
     return nachricht;
   }

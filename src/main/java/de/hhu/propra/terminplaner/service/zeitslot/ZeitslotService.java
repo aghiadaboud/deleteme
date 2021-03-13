@@ -30,22 +30,25 @@ public class ZeitslotService {
     return zeitslotRepository.findAll();
   }
 
-  public Map<Boolean, String> addZeitslotzuUebung(Uebung uebung, LocalDate datum, String uhrzeit) {
+  public Map<Boolean, String> checkAnmeldungmodusAndaddZeitslotzuUebung(Uebung uebung,
+                                                                        LocalDate datum,
+                                                                        String uhrzeit) {
     if (uebung.getGruppenanmeldung()) {
-      return addZeitslotzuUebungAndGruppeBeiIndividualanmeldung(uebung, datum, uhrzeit,
+      return addZeitslotzuUebungAndGruppeZuZeitslotIfIndividualanmeldung(uebung, datum, uhrzeit,
           Optional.empty());
     } else {
       Gruppe gruppe = new Gruppe("Gruppe-" + datum.toString() + "-" + uhrzeit);
-      return addZeitslotzuUebungAndGruppeBeiIndividualanmeldung(uebung, datum, uhrzeit,
+      return addZeitslotzuUebungAndGruppeZuZeitslotIfIndividualanmeldung(uebung, datum, uhrzeit,
           Optional.of(gruppe));
     }
   }
 
 
-  private Map<Boolean, String> addZeitslotzuUebungAndGruppeBeiIndividualanmeldung(Uebung uebung,
-                                                                                  LocalDate datum,
-                                                                                  String uhrzeit,
-                                                                                  Optional<Gruppe> gruppe) {
+  private Map<Boolean, String> addZeitslotzuUebungAndGruppeZuZeitslotIfIndividualanmeldung(
+      Uebung uebung,
+      LocalDate datum,
+      String uhrzeit,
+      Optional<Gruppe> gruppe) {
     Map<Boolean, String> nachricht = new HashMap<>();
 //    zeitslot valid??liegt nach Anmeldungsfrist?
 //        if (!validZeitslot(zeitslot)) {
@@ -98,5 +101,12 @@ public class ZeitslotService {
 
   public int studentenKapazitaetofZeitslotForIndividualanmeldung(Zeitslot zeitslot) {
     return zeitslot.tutorenAnzahl() * 5;
+  }
+
+  public void decreaseZeitslotKapazitaetAndUpdateZustand(Zeitslot zeitslot, int platz,
+                                                         Optional<Boolean> reserviert) {
+    zeitslot.decreaseKapazitaet(platz);
+    reserviert.ifPresent(zeitslot::setReserviert);
+    zeitslotRepository.save(zeitslot);
   }
 }
