@@ -26,11 +26,11 @@
             Some success message
         </div>
 
-        <form method="post">
+        <form method="post" th:object="${tutorform}">
             <div class="form-group">
                 <div>
-                    <label class="mb-0" for="githubname">GithubName</label>
-                    <input class="form-control mb-2" id="githubname" name="githubname"
+                    <label class="mb-0" for="name">Tutor-GithubName</label>
+                    <input class="form-control mb-2" id="name" name="name" th:field="*{name}"
                            type="text">
                 </div>
                 <input class="btn btn-primary" type="submit" value="Hinzufügen">
