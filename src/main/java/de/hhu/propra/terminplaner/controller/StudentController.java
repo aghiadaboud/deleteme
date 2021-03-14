@@ -66,31 +66,6 @@ public class StudentController {
     return "student/getzeitslots";
   }
 
-//  @GetMapping("/uebung/{uebungid}/zeitslot/{id}")
-//  public String getGruppenUebersicht(@PathVariable("uebungid") Long uebungid,
-//                                     @PathVariable("id") Long id,
-//                                     Model model) {
-//    Uebung uebung = uebungService.findUebungById(uebungid);
-//    Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
-//    model.addAttribute("gruppe", new Gruppe());
-//    model.addAttribute("uebung", uebung);
-//    model.addAttribute("zeitslot", zeitslot);
-//    //model.addAttribute("gruppen", zeitslotService.getFreieGruppenofZeitslot(zeitslot));
-//    return "student/addGruppe";
-//  }
-
-//  @PostMapping("/uebung/{uebungid}/zeitslot/{id}")
-//  public String placeGruppe(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
-//                            @RequestParam("gruppename") String gruppename,
-//                            @RequestParam("githubname") String githubname) {
-//    Uebung uebung = uebungService.findUebungById(uebungid);
-//    Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
-//    Gruppe gruppe = new Gruppe(gruppename);
-//    gruppe.addStudent(new Student(githubname));
-//    //studentService.addStudentZuGruppe(gruppe, new Student(githubname));
-//    gruppeService.addGruppeZuZeitslot(zeitslot, gruppe);
-//    return "redirect:/student/uebung/" + uebungid + "/zeitslot/" + id;
-//  }
 
   @GetMapping("/uebung/{uebungid}/zeitslot/{id}")
   public String getGruppenForm(@PathVariable("uebungid") Long uebungid,
@@ -143,23 +118,6 @@ public class StudentController {
     checkResultAndSetupMessage(redirectAttributes, addedStudentZuGruppe);
     return "redirect:/student/uebung/" + uebungid + "/oeffeneplaetze";
   }
-
-
-//  @PostMapping("/uebung/{uebungid}/individual/{zeitslotid}")
-//  public String placeStudentIndividual(@PathVariable("uebungid") Long uebungid,
-//                                       @PathVariable("zeitslotid") Long zeitslotid,
-//                                       @RequestParam("gruppeid") Long gruppeid,
-//                                       @RequestParam("studentgithubname") String studentgithubname,
-//                                       RedirectAttributes redirectAttributes) {
-//    Uebung uebung = uebungService.findUebungById(uebungid);
-//    Zeitslot zeitslot = zeitslotService.findZeitslotById(zeitslotid);
-//    Gruppe gruppe = gruppeService.findGruppeById(gruppeid);
-//    Map<Boolean, String> addedStudentZuGruppe =
-//        studentService.addStudentZuGruppe(zeitslot, gruppe, new Student(studentgithubname),
-//            uebung.getGruppenanmeldung());
-//    checkResultAndSetupMessage(redirectAttributes, addedStudentZuGruppe);
-//    return "redirect:/student/uebung/" + uebungid + "/oeffeneplaetze";
-//  }
 
 
   private void checkResultAndSetupMessage(RedirectAttributes redirectAttributes,

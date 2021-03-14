@@ -1,6 +1,7 @@
 package de.hhu.propra.terminplaner.controller;
 
 
+import de.hhu.propra.terminplaner.domain.forms.TutorForm;
 import de.hhu.propra.terminplaner.domain.gruppe.Gruppe;
 import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
@@ -80,11 +81,13 @@ public class OrganisatorController {
     return "redirect:/setup/uebung/" + id;
   }
 
+
   @GetMapping("/uebung/{uebungid}/zeitslot/{id}")
   public String tutoren(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
                         Model model) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
+    model.addAttribute("tutorform", new TutorForm());
     model.addAttribute("uebung", uebung);
     model.addAttribute("zeitslot", zeitslot);
     return "organisator/addTutor";
@@ -92,35 +95,16 @@ public class OrganisatorController {
 
   @PostMapping("/uebung/{uebungid}/zeitslot/{id}")
   public String placeTutor(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
-                           @RequestParam("githubname") String githubname,
+                           @ModelAttribute("tutorForm") TutorForm tutorForm,
                            RedirectAttributes redirectAttributes) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
     Map<Boolean, String> addTutorZuZeitslot = tutorService
-        .checkAnmeldungmodusAndaddTutorZuZeitslot(zeitslot, new Tutor(githubname),
+        .checkAnmeldungmodusAndaddTutorZuZeitslot(zeitslot, new Tutor(tutorForm.getName()),
             uebung.getGruppenanmeldung());
     checkResultAndSetupMessage(redirectAttributes, addTutorZuZeitslot);
     return "redirect:/setup/uebung/" + uebungid + "/zeitslot/" + id;
   }
-
-//  @GetMapping("/uebung/{uebungid}/zeitslot/{id}")
-//  public String tutoren(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
-//                        Model model) {
-//    Uebung uebung = uebungService.findUebungById(uebungid);
-//    Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
-//    model.addAttribute("tutorform", new TutorForm());
-//    model.addAttribute("uebung", uebung);
-//    model.addAttribute("zeitslot", zeitslot);
-//    return "organisator/addTutor";
-//  }
-//
-//  @PostMapping("/uebung/{uebungid}/zeitslot/{id}")
-//  public String placeTutor(@PathVariable("uebungid") Long uebungid, @PathVariable("id") Long id,
-//                           @ModelAttribute("tutor") TutorForm tutorForm) {
-//    Zeitslot zeitslot = zeitslotService.findZeitslotById(id);
-//    tutorService.addTutorZuZeitslot(zeitslot, new Tutor(tutorForm.getName()));
-//    return "redirect:/setup/uebung/" + uebungid + "/zeitslot/" + id;
-//  }
 
 
   @GetMapping("/uebung/{uebungid}/edit")
@@ -143,7 +127,7 @@ public class OrganisatorController {
     return "redirect:/setup/uebung/" + uebungid + "/edit";
   }
 
-  //deleteStudent muss noch implementiert
+
   @PostMapping("/uebung/{uebungid}/movestudent")
   public String moveStudent(@PathVariable("uebungid") Long uebungid,
                             @RequestParam("zeitslotidold") Long zeitslotidold,
