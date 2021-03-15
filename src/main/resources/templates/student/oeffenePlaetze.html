@@ -33,6 +33,7 @@
                     <span th:text="${gruppe.name}"></span>
                     <span th:text="|(hat ${gruppe.size()} Mitglieder)|"></span>
                     <form method="post" style="display:inline!important;">
+                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
                         <input name="zeitslotid" th:value="${zeitslot.id}" type="hidden">
                         <input name="gruppeid" th:value="${gruppe.id}" type="hidden">
                         <input id="studentgithubname" name="studentgithubname" type="text">

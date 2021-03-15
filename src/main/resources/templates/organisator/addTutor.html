@@ -27,6 +27,7 @@
         </div>
 
         <form method="post" th:object="${tutorform}">
+            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <div class="form-group">
                 <div>
                     <label class="mb-0" for="name">Tutor-GithubName</label>

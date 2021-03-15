@@ -25,6 +25,7 @@
         </div>
 
         <form action="#" method="post">
+            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <div class="form-group">
                 <div>
                     <label class="mb-0" for="datum">Datum</label>

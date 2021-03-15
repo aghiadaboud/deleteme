@@ -32,6 +32,7 @@
                     <span th:text="|(hat ${gruppe.size()} Mitglieder)|">Gruppe</span>
                     <form method="post" style="display:inline!important;"
                           th:action="@{removegruppe}">
+                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
                         <input name="zeitslotid" th:value="${zeitslot.id}" type="hidden">
                         <input name="gruppeid" th:value="${gruppe.id}" type="hidden">
                         <button class="delete" type="submit">Gruppe Löschen</button>
@@ -39,6 +40,7 @@
                     <div th:each="student : ${gruppe.studenten}">
                         <span th:text="${student.githubname}"></span>
                         <form method="post" style="display:inline!important;" th:action="@{movestudent}">
+                            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
                             <input name="studentid" th:value="${student.id}" type="hidden">
                             <input name="zeitslotidold" th:value="${zeitslot.id}" type="hidden">
                             <input name="gruppeidold" th:value="${gruppe.id}" type="hidden">
