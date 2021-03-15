@@ -10,20 +10,27 @@
 </head>
 <body>
 <div class="container">
-    <div id="uebungen">
+    <div id="zetslots">
         <div style="margin-top:50px"></div>
+        <h1 th:object="${uebung}"
+            th:text="*{name}">Otto Müller</h1>
+
         <div class="list-group">
             <ul class="list-group">
-                <li class="list-group-item disabled">Uebungen</li>
-                <li th:each="uebung :${uebungen}">
-                    <a href="#" th:href="@{student/uebung/{id}(id=${uebung.id})}"
-                       th:text="*{uebung.name}">
+                <li class="list-group-item disabled">Zeitslots</li>
+                <li th:each="zeitslot :${zeitslots}">
+                    <a href="#"
+                       th:href="@{/zeitslot/{id}/gruppenform(id=${zeitslot.id})}"
+                       th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">
                     </a>
                 </li>
             </ul>
         </div>
     </div>
 
+    <div>
+        <a href="/uebung">Zurück zur Uebungen-Übersicht</a>
+    </div>
 </div>
 <div style="margin-top:50px"></div>
 </body>

@@ -31,19 +31,20 @@
                     <span th:text="${gruppe.name}"></span>
                     <span th:text="|(hat ${gruppe.size()} Mitglieder)|">Gruppe</span>
                     <form method="post" style="display:inline!important;"
-                          th:action="@{removegruppe}">
-                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+                          th:action="@{/gruppe/{gruppeid}/removegruppe(gruppeid=${gruppe.id})}">
+                        <!--                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
                         <input name="zeitslotid" th:value="${zeitslot.id}" type="hidden">
-                        <input name="gruppeid" th:value="${gruppe.id}" type="hidden">
+                        <input name="uebungid" th:value="${uebung.id}" type="hidden">
                         <button class="delete" type="submit">Gruppe Löschen</button>
                     </form>
                     <div th:each="student : ${gruppe.studenten}">
                         <span th:text="${student.githubname}"></span>
-                        <form method="post" style="display:inline!important;" th:action="@{movestudent}">
-                            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+                        <form method="post" style="display:inline!important;"
+                              th:action="@{/gruppe/{gruppeid}/movestudent(gruppeid=${gruppe.id})}">
+                            <!--                            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
                             <input name="studentid" th:value="${student.id}" type="hidden">
                             <input name="zeitslotidold" th:value="${zeitslot.id}" type="hidden">
-                            <input name="gruppeidold" th:value="${gruppe.id}" type="hidden">
+                            <input name="uebungid" th:value="${uebung.id}" type="hidden">
                             <button class="delete" type="submit">Verschiebe nach</button>
                             <select aria-label="Default select example" class="form-select" id="gruppeidnew"
                                     name="gruppeidnew">
@@ -60,6 +61,10 @@
                     </div>
                 </li>
             </ul>
+        </div>
+
+        <div>
+            <a href="/uebung/setup">Zurück zur Uebungen-Übersicht</a>
         </div>
     </div>
 

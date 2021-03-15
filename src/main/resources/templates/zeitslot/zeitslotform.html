@@ -11,48 +11,54 @@
 <body>
 
 <div class="container">
-    <div id="new-Tutor">
+    <div id="new-Zeitslot">
         <div style="margin-top:50px"></div>
-        <h1 th:text="${uebung.name}">Otto Müller</h1>
-        <di>
-            <h1 th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h1>
-        </di>
+        <h1 th:object="${uebung}"
+            th:text="*{name}">Otto Müller</h1>
 
         <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
-            Some error message
+            error message
         </div>
 
         <div class="alert alert-success" id="success-message" th:if="${success} != null" th:text="${success}">
-            Some success message
+            success message
         </div>
 
-        <form method="post" th:object="${tutorform}">
-            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+        <form action="#" method="post" th:action="@{addzeitslot}">
+            <!--            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
             <div class="form-group">
                 <div>
-                    <label class="mb-0" for="name">Tutor-GithubName</label>
-                    <input class="form-control mb-2" id="name" name="name" th:field="*{name}"
-                           type="text">
+                    <label class="mb-0" for="datum">Datum</label>
+                    <input class="form-control mb-2" id="datum" name="datum" type="date">
                 </div>
-                <input class="btn btn-primary" type="submit" value="Hinzufügen">
+                <div>
+                    <label class="mb-0" for="uhrzeit">Uhrzeit</label>
+                    <input class="form-control mb-2" id="uhrzeit" name="uhrzeit"
+                           type="time">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Erstellen">
             </div>
         </form>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">Tutoren</th>
+                <th scope="col">Termine</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="tutor :${zeitslot.tutoren}">
+            <tr th:each="zeitslot :${zeitslots}">
                 <td>
-                    <div th:text="${tutor.githubname}"></div>
+                    <a href="#"
+                       th:href="@{/zeitslot/{id}/tutoren(id=${zeitslot.id})}"
+                       th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">
+                    </a>
                 </td>
             </tr>
             </tbody>
         </table>
 
-        <a th:href="@{/setup/uebung/{id}(id=${uebung.id})}">Zurück zur Zeitslots-Übersicht</a>
+        <a href="/uebung/setup">Zurück zur Uebungen-Übersicht</a>
+
     </div>
 
 </div>

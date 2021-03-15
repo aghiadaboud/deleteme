@@ -10,27 +10,29 @@
 </head>
 <body>
 <div class="container">
-    <div id="zetslots">
+    <div id="uebungen">
         <div style="margin-top:50px"></div>
-        <h1 th:object="${uebung}"
-            th:text="*{name}">Otto Müller</h1>
-
         <div class="list-group">
             <ul class="list-group">
-                <li class="list-group-item disabled">Zeitslots</li>
-                <li th:each="zeitslot :${zeitslots}">
-                    <a href="#"
-                       th:href="@{{uebungid}/zeitslot/{id}(id=${zeitslot.id}, uebungid=${uebung.id})}"
-                       th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">
+                <li class="list-group-item disabled">Uebungen</li>
+                <li th:each="uebung :${uebungen}">
+                    <a href="#" th:href="@{/uebung/{id}(id=${uebung.id})}"
+                       th:text="*{uebung.name}">
                     </a>
+                    <span th:if="${uebung.gruppenanmeldung}"> |
+                        <a href="#" th:href="@{/uebung/{id}/oeffeneplaetze(id=${uebung.id})}">
+                            offene Plaetze
+                        </a>
+                    </span>
                 </li>
             </ul>
         </div>
+
+
+        <a href="/">Zurück zur Hauptseite</a>
     </div>
 
-    <div>
-        <a th:href="@{/student/uebung/{id}/oeffeneplaetze(id=${uebung.id})}">zeige die öffenen Plätze</a>
-    </div>
+
 </div>
 <div style="margin-top:50px"></div>
 </body>

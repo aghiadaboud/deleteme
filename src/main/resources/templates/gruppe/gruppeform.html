@@ -29,8 +29,8 @@
                 th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h3>
         </di>
 
-        <form method="post" th:object="${gruppeform}">
-            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+        <form method="post" th:action="@{addgruppe}" th:object="${gruppeform}">
+            <!--            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
             <div class="form-group">
                 <div>
                     <label class="mb-0" for="gruppename">gruppeName</label>
@@ -51,7 +51,10 @@
 
 
         <div>
-            <a th:href="@{/student/uebung/{id}(id=${uebung.id})}">zurück</a>
+            <a th:href="@{/uebung/{id}(id=${uebung.id})}">zurück</a>
+        </div>
+        <div>
+            <a href="/">Zurück zur Hauptseite</a>
         </div>
     </div>
 

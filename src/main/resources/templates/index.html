@@ -23,7 +23,7 @@
 <body>
 
 <div class="container">
-    <h1>Terminplaner</h1>
+    <h1 class="text-center">Terminplaner</h1>
     <p>Login: <span th:text="${user} ?: 'Not logged in'">Not logged in</span></p>
 
     <a href="/oauth2/authorization/github" th:if="!${user}">Login using GitHub</a></li>
@@ -31,13 +31,22 @@
         <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
         <button type="submit">Logout</button>
     </form>
-
-    <div>
-        <hr>
-        <a href="/user">show user info</a>
-        <hr>
-        <a href="/tokeninfo">show token info</a>
-        <hr>
+    <hr>
+    <!--    <div>-->
+    <!--        <hr>-->
+    <!--        <a href="/user">show user info</a>-->
+    <!--        <hr>-->
+    <!--        <a href="/tokeninfo">show token info</a>-->
+    <!--        <hr>-->
+    <!--    </div>-->
+    <div style="margin-top:45px"></div>
+    <div class="row">
+        <div class="col">
+            <a href="/uebung">Uebungen</a>
+        </div>
+        <div class="col">
+            <a href="/uebung/setup">Setup Uebung</a>
+        </div>
     </div>
 </div>
 </body>

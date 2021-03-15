@@ -3,6 +3,7 @@ package de.hhu.propra.terminplaner.service.uebung;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.propra.terminplaner.repos.UebungRepository;
+import de.hhu.propra.terminplaner.repos.ZeitslotRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,11 @@ public class UebungService {
 
   private UebungRepository uebungRepository;
 
+  private ZeitslotRepository zeitslotRepository;
 
-  public UebungService(UebungRepository uebungRepository) {
+  public UebungService(UebungRepository uebungRepository, ZeitslotRepository zeitslotRepository) {
     this.uebungRepository = uebungRepository;
+    this.zeitslotRepository = zeitslotRepository;
   }
 
   public List<Uebung> findAllUebungen() {
@@ -83,5 +86,10 @@ public class UebungService {
   public Uebung saveUebung(Uebung uebung) {
     uebungRepository.save(uebung);
     return uebung;
+  }
+
+  public Uebung findUebungByZeitslotId(Long id) {
+    Long uebungId = zeitslotRepository.findUebungIdByZeitslotId(id);
+    return findUebungById(uebungId);
   }
 }

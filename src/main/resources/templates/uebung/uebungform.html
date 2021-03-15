@@ -13,8 +13,8 @@
 <div class="container">
     <div id="new-uebung">
         <div style="margin-top:50px"></div>
-        <form action="/setup" method="post" th:object="${uebung}">
-            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+        <form action="/uebung/setup" method="post" th:object="${uebung}">
+            <!--            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
             <div class="form-group">
                 <label for="name">Uebungname:</label>
                 <input id="name" name="name" th:field="*{name}" type="text">
@@ -48,14 +48,24 @@
             <tbody>
             <tr th:each="uebung :${uebungen}">
                 <td>
-                    <a href="#" th:href="@{setup/uebung/{id}(id=${uebung.id})}"
+                    <a href="#" th:href="@{/uebung/{id}/zeitslotform(id=${uebung.id})}"
                        th:text="*{uebung.name}">
+                    </a>
+                    <span>|</span>
+                    <!--                    <a href="#" th:href="@{/uebung/{id}/oeffeneplaetze(id=${uebung.id})}">-->
+                    <!--                        offene Plaetze-->
+                    <!--                    </a>-->
+                    <!--                    <span>|</span>-->
+                    <a href="#" th:href="@{/uebung/{id}/edit(id=${uebung.id})}">
+                        Loesche Gruppe oder verschiebe Student
                     </a>
                 </td>
             </tr>
             </tbody>
         </table>
 
+
+        <a href="/">Zurück zur Hauptseite</a>
     </div>
 
 </div>
