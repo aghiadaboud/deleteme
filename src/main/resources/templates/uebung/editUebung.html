@@ -48,7 +48,6 @@
                             <button class="delete" type="submit">Verschiebe nach</button>
                             <select aria-label="Default select example" class="form-select" id="gruppeidnew"
                                     name="gruppeidnew">
-                                <option selected>wähle Gruppe aus</option>
                                 <th:block th:each="newzeitslot : ${uebung.zeitslots}">
                                     <option th:each="newgruppe : ${newzeitslot.gruppen}"
                                             th:if="${newgruppe.id != gruppe.id}"
