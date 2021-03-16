@@ -98,16 +98,11 @@ public class StudentService {
     //Für Individual Anmeldung kann die Methode nach Studenten Verteilung benutzt werden!!
     Map<Boolean, String> nachricht = new HashMap<>();
     Student student = findStudentById(oldGruppe, studentid);
-    boolean nochFreiePlaetze = newGruppe.size() < 5;
-    if (nochFreiePlaetze) {
-      oldGruppe.removeStudent(student);
-      newGruppe.addStudent(student);
-      gruppeService.saveGruppe(oldGruppe);
-      gruppeService.saveGruppe(newGruppe);
-      nachricht.put(true, "Student wurde erfolgreich verschoben");
-      return nachricht;
-    }
-    nachricht.put(false, "Student kann nicht verschoben werden");
+    oldGruppe.removeStudent(student);
+    newGruppe.addStudent(student);
+    gruppeService.saveGruppe(oldGruppe);
+    gruppeService.saveGruppe(newGruppe);
+    nachricht.put(true, "Student wurde erfolgreich verschoben");
     return nachricht;
   }
 }
