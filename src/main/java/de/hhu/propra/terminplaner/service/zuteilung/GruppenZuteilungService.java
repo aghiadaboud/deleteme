@@ -9,9 +9,7 @@ import de.hhu.propra.terminplaner.service.student.StudentService;
 import de.hhu.propra.terminplaner.service.tutor.TutorService;
 import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,24 +37,20 @@ public class GruppenZuteilungService {
 
   public void verteileGruppen(Long uebungid) {
     Uebung uebung = uebungService.findUebungById(uebungid);
-    Optional<List<Zeitslot>> allReservierteZeitslots =
-        uebungService.getAllReservierteZeitslots(uebung);
-    if (allReservierteZeitslots.isPresent()) {
-      List<Zeitslot> zeitslots = allReservierteZeitslots.get();
-      for (Zeitslot zeitslot : zeitslots) {
+
+    List<Zeitslot> allZeitslotOfUebung =
+        uebungService.getAllZeitslotOfUebung(uebung);
+
+    if (!allZeitslotOfUebung.isEmpty()) {
+      for (Zeitslot zeitslot : allZeitslotOfUebung) {
         List<Tutor> allTutorOfZeitslot = zeitslotService.getAllTutorOfZeitslot(zeitslot);
         List<Gruppe> allGruppenOfZeitslot = zeitslotService.getAllGruppenOfZeitslot(zeitslot);
-        //List<Tutor> verteilteTutoren = new ArrayList<>();
         for (Gruppe gruppe : allGruppenOfZeitslot) {
-//          List<Tutor> freieTutoren =
-//              allTutorOfZeitslot.stream().filter(t -> !verteilteTutoren.contains(t)).collect(
-//                  Collectors.toList());
-//          gruppe.setTutor(freieTutoren.);
-          Collections.shuffle(allTutorOfZeitslot);
+          //Collections.shuffle(allTutorOfZeitslot);
           Tutor tutor = allTutorOfZeitslot.get(0);
           gruppe.setTutor(tutor);
-          gruppeService.saveGruppe(gruppe);
-          allTutorOfZeitslot.remove(tutor);
+          //gruppeService.saveGruppe(gruppe);
+          //allTutorOfZeitslot.remove(tutor);
         }
       }
     }

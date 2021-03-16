@@ -25,6 +25,18 @@ public class GruppeService {
     this.zeitslotService = zeitslotService;
   }
 
+  public boolean checkStundentIsInGroup(Gruppe gruppe, String githubName) {
+    Optional<Student> studentFound = gruppe.getStudenten()
+        .stream()
+        .filter(student -> student.getGithubname()
+            .equals(githubName))
+        .findAny();
+    if (studentFound.isPresent()) {
+      return true;
+    }
+    return false;
+  }
+
   public List<Gruppe> findAll() {
     return gruppeRepository.findAll();
   }

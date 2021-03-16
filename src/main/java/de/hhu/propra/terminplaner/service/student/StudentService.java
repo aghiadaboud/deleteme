@@ -41,6 +41,13 @@ public class StudentService {
                                                                        Gruppe gruppe,
                                                                        Student student,
                                                                        boolean gruppenAnmeldung) {
+    Map<Boolean, String> nachricht = new HashMap<>();
+    boolean stundentIsInGroup =
+        gruppeService.checkStundentIsInGroup(gruppe, student.getGithubname());
+    if (stundentIsInGroup) {
+      nachricht.put(false, "Student ist bereits in der Gruppe");
+      return nachricht;
+    }
     int anzahlErlaubteMitgliederIndividualanmeldung =
         zeitslotService.studentenKapazitaetofZeitslotForIndividualanmeldung(zeitslot);
     if (gruppenAnmeldung) {

@@ -6,12 +6,10 @@ import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.sli
 import static de.hhu.propra.terminplaner.archunit.aggregate.rules.HaveExactlyOneAggregateRoot.HAVE_EXACTLY_ONE_AGGREGATE_ROOT;
 
 
-import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
-import com.tngtech.archunit.library.dependencies.Slice;
 import de.hhu.propra.terminplaner.TerminplanerApplication;
 import de.hhu.propra.terminplaner.stereotype.AggregateRoot;
 
@@ -23,20 +21,11 @@ public class AggregateRulesTest {
   @ArchTest
   static final ArchRule oneAggregateRootPerAggregate = slices()
       .matching("..domain.(*)..")
-      .that(new DescribedPredicate<Slice>("") {
-        @Override
-        public boolean apply(Slice input) {
-          System.out.println((input.getDescription()));
-          return !input.getDescription().equals("Slice forms");
-        }
-      })
       .should(HAVE_EXACTLY_ONE_AGGREGATE_ROOT);
   @ArchTest
   static final ArchRule onlyAggregateRootsArePublic = classes()
       .that()
       .areNotAnnotatedWith(AggregateRoot.class)
-      .and()
-      .resideOutsideOfPackage("..domain.forms..")
       .and()
       .resideInAPackage("..domain.(*)..")
       .should()

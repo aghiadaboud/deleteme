@@ -1,8 +1,8 @@
 package de.hhu.propra.terminplaner.controller;
 
 
-import de.hhu.propra.terminplaner.domain.forms.GruppeForm;
-import de.hhu.propra.terminplaner.domain.forms.TutorForm;
+import de.hhu.propra.terminplaner.controller.forms.GruppeForm;
+import de.hhu.propra.terminplaner.controller.forms.TutorForm;
 import de.hhu.propra.terminplaner.domain.gruppe.Gruppe;
 import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
@@ -47,7 +47,7 @@ public class ZeitslotController {
   }
 
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @GetMapping("/{id}/tutoren")
   public String tutoren(@PathVariable("id") Long id,
                         Model model) {
@@ -59,7 +59,7 @@ public class ZeitslotController {
     return "tutor/tutorform";
   }
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @PostMapping("/{id}/addtutor")
   public String placeTutor(@RequestParam("uebungid") Long uebungid, @PathVariable("id") Long id,
                            @ModelAttribute("tutorForm") TutorForm tutorForm,

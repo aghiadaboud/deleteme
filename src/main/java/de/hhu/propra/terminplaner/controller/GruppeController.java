@@ -1,12 +1,9 @@
 package de.hhu.propra.terminplaner.controller;
 
 import de.hhu.propra.terminplaner.domain.gruppe.Gruppe;
-import de.hhu.propra.terminplaner.domain.student.Student;
-import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.propra.terminplaner.service.gruppe.GruppeService;
 import de.hhu.propra.terminplaner.service.student.StudentService;
-import de.hhu.propra.terminplaner.service.tutor.TutorService;
 import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
 import java.util.Map;
@@ -27,20 +24,18 @@ public class GruppeController {
 
   private GruppeService gruppeService;
 
-  private TutorService tutorService;
   private StudentService studentService;
 
   public GruppeController(UebungService uebungService, ZeitslotService zeitslotService,
-                          TutorService tutorService, GruppeService gruppeService,
+                          GruppeService gruppeService,
                           StudentService studentService) {
     this.uebungService = uebungService;
     this.zeitslotService = zeitslotService;
-    this.tutorService = tutorService;
     this.gruppeService = gruppeService;
     this.studentService = studentService;
   }
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @PostMapping("/{gruppeid}/removegruppe")
   public String removeGruppe(@RequestParam("uebungid") Long uebungid,
                              @RequestParam("zeitslotid") Long zeitslotid,
@@ -54,24 +49,25 @@ public class GruppeController {
   }
 
 
-  @PostMapping("/{gruppeid}/addstudent")
-  public String placeStudent(@RequestParam("uebungid") Long uebungid,
-                             @RequestParam("zeitslotid") Long zeitslotid,
-                             @PathVariable("gruppeid") Long gruppeid,
-                             @RequestParam("studentgithubname") String studentgithubname,
-                             RedirectAttributes redirectAttributes) {
-    Uebung uebung = uebungService.findUebungById(uebungid);
-    Zeitslot zeitslot = zeitslotService.findZeitslotById(zeitslotid);
-    Gruppe gruppe = gruppeService.findGruppeById(gruppeid);
-    Map<Boolean, String> addedStudentZuGruppe =
-        studentService.checkAnmeldungmodusAndaddStudentZuGruppe(zeitslot, gruppe,
-            new Student(studentgithubname),
-            uebung.getGruppenanmeldung());
-    checkResultAndSetupMessage(redirectAttributes, addedStudentZuGruppe);
-    return "redirect:/uebung/" + uebungid + "/oeffeneplaetze";
-  }
+//  @PostMapping("/{gruppeid}/addstudent")
+//  public String placeStudent(@AuthenticationPrincipal OAuth2User principal,
+//                             @RequestParam("uebungid") Long uebungid,
+//                             @RequestParam("zeitslotid") Long zeitslotid,
+//                             @PathVariable("gruppeid") Long gruppeid,
+//                             RedirectAttributes redirectAttributes) {
+//    String studentgithubname = principal.getAttribute("login");
+//    Uebung uebung = uebungService.findUebungById(uebungid);
+//    Zeitslot zeitslot = zeitslotService.findZeitslotById(zeitslotid);
+//    Gruppe gruppe = gruppeService.findGruppeById(gruppeid);
+//    Map<Boolean, String> addedStudentZuGruppe =
+//        studentService.checkAnmeldungmodusAndaddStudentZuGruppe(zeitslot, gruppe,
+//            new Student(studentgithubname),
+//            uebung.getGruppenanmeldung());
+//    checkResultAndSetupMessage(redirectAttributes, addedStudentZuGruppe);
+//    return "redirect:/uebung/" + uebungid + "/oeffeneplaetze";
+//  }
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @PostMapping("/{gruppeidold}/movestudent")
   public String moveStudent(@RequestParam("uebungid") Long uebungid,
                             @RequestParam("zeitslotidold") Long zeitslotidold,

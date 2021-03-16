@@ -7,8 +7,10 @@ import de.hhu.propra.terminplaner.service.student.StudentService;
 import de.hhu.propra.terminplaner.service.tutor.TutorService;
 import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
+import de.hhu.propra.terminplaner.service.zuteilung.GruppenZuteilungService;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,15 +33,25 @@ public class UebungController {
 
   private TutorService tutorService;
   private StudentService studentService;
+  private GruppenZuteilungService gruppenZuteilungService;
+
 
   public UebungController(UebungService uebungService, ZeitslotService zeitslotService,
                           TutorService tutorService, GruppeService gruppeService,
-                          StudentService studentService) {
+                          StudentService studentService,
+                          GruppenZuteilungService gruppenZuteilungService) {
     this.uebungService = uebungService;
     this.zeitslotService = zeitslotService;
     this.tutorService = tutorService;
     this.gruppeService = gruppeService;
     this.studentService = studentService;
+    this.gruppenZuteilungService = gruppenZuteilungService;
+  }
+
+  @GetMapping("/test")
+  public String test(Model model) {
+    gruppenZuteilungService.verteileGruppen(1L);
+    return "uebung/uebunguebersicht";
   }
 
 
@@ -50,6 +62,28 @@ public class UebungController {
     return "uebung/uebunguebersicht";
   }
 
+  //@Secured("ROLE_ORGA")
+  @GetMapping("/vorlage")
+  public String vorlage(Model model) {
+    Optional<Uebung> uebungVorlage = uebungService.ladeVorlage();
+    model.addAttribute("uebung", uebungVorlage.orElse(null));
+    return "uebung/uebungvorlageform";
+  }
+
+  //@Secured("ROLE_ORGA")
+  @PostMapping("/vorlage")
+  public String saveUebungFromVorlage(@RequestParam("vorlageid") Long vorlageid,
+                                      @RequestParam("uebungname") String uebungname,
+                                      @RequestParam("von") @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                          LocalDate von,
+                                      @RequestParam("bis") @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                          LocalDate bis,
+                                      RedirectAttributes redirectAttributes) {
+    Map<Boolean, String> created =
+        uebungService.createUebungFromVorlage(vorlageid, uebungname, von, bis);
+    checkResultAndSetupMessage(redirectAttributes, created);
+    return "redirect:/uebung/vorlage";
+  }
 
   @GetMapping("/{id}")
   public String getzeitslots(@PathVariable("id") Long id, Model model) {
@@ -63,7 +97,7 @@ public class UebungController {
     return "zeitslot/zeitslotuebersicht";
   }
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @GetMapping("/setup")
   public String uebungForm(Model model) {
     model.addAttribute("uebung", new Uebung());
@@ -71,7 +105,7 @@ public class UebungController {
     return "uebung/uebungform";
   }
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @PostMapping("/setup")
   public String configureUebung(@ModelAttribute("uebung") Uebung uebung) {
     //hier muss eine createUebung methode aufgerufen, die checkt ob uebung valid, unf micht direkt saveUebung
@@ -80,7 +114,7 @@ public class UebungController {
   }
 
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @GetMapping("/{id}/zeitslotform")
   public String zeitslotsForm(@PathVariable("id") Long id, Model model) {
     Uebung uebung = uebungService.findUebungById(id);
@@ -90,7 +124,7 @@ public class UebungController {
   }
 
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @PostMapping("/{id}/addzeitslot")
   public String placeZeitslot(@PathVariable("id") Long id,
                               @RequestParam("datum") @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -105,7 +139,7 @@ public class UebungController {
   }
 
 
-  //@Secured("ROLE_Organisator")
+  //@Secured("ROLE_ORGA")
   @GetMapping("/{uebungid}/edit")
   public String editUebung(@PathVariable("uebungid") Long uebungid,
                            Model model) {

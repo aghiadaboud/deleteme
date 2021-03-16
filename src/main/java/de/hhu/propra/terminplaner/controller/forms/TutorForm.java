@@ -1,4 +1,4 @@
-package de.hhu.propra.terminplaner.domain.forms;
+package de.hhu.propra.terminplaner.controller.forms;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

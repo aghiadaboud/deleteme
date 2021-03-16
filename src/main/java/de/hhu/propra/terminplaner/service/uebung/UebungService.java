@@ -1,12 +1,15 @@
 package de.hhu.propra.terminplaner.service.uebung;
 
+import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.propra.terminplaner.repos.UebungRepository;
 import de.hhu.propra.terminplaner.repos.ZeitslotRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.NonNull;
@@ -91,5 +94,36 @@ public class UebungService {
   public Uebung findUebungByZeitslotId(Long id) {
     Long uebungId = zeitslotRepository.findUebungIdByZeitslotId(id);
     return findUebungById(uebungId);
+  }
+
+  public Optional<Uebung> ladeVorlage() {
+    List<Uebung> allUebungen = uebungRepository.findAll();
+    List<LocalDate> daten =
+        allUebungen.stream().map(Uebung::getAnmeldungfristbis).collect(Collectors.toList());
+    List<LocalDate> sortedDaten =
+        daten.stream().sorted(LocalDate::compareTo).collect(Collectors.toList());
+    if (!sortedDaten.isEmpty()) {
+      LocalDate letztesUebungDatum = sortedDaten.get(sortedDaten.size() - 1);
+      return allUebungen.stream()
+          .filter(uebung -> uebung.getAnmeldungfristbis().equals(letztesUebungDatum)).findAny();
+    }
+    return Optional.empty();
+  }
+
+  public Map<Boolean, String> createUebungFromVorlage(Long vorlageid, String newUebungname,
+                                                      LocalDate von, LocalDate bis) {
+    Map<Boolean, String> nachricht = new HashMap<>();
+    Uebung vorlage = findUebungById(vorlageid);
+    Uebung newUebung = new Uebung(newUebungname, vorlage.getGruppenanmeldung(), von, bis);
+    for (Zeitslot zeitslot : vorlage.getZeitslots()) {
+      Zeitslot newZeitslot = new Zeitslot(zeitslot.getDatum(), zeitslot.getUhrzeit());
+      zeitslot.getTutoren()
+          .forEach(tutor -> newZeitslot.addTutor(new Tutor(tutor.getGithubname())));
+      newUebung.addZeitslot(newZeitslot);
+    }
+    uebungRepository.save(newUebung);
+    nachricht.put(true,
+        "Übung wurde erstellt. Gehen Sie zur Uebung-Setup Seite um die neue Übung zu sehen!");
+    return nachricht;
   }
 }
