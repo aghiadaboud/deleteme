@@ -49,7 +49,7 @@ create table if not exists tutor
     id         BIGINT primary key AUTO_INCREMENT,
     githubname VARCHAR(100) NOT NULL,
     zeitslot      BIGINT references zeitslot (id),
-    gruppe     BIGINT references gruppe (id)
+    gruppeid     BIGINT
 );
 
 

@@ -2,7 +2,6 @@ package de.hhu.propra.terminplaner.domain.gruppe;
 
 
 import de.hhu.propra.terminplaner.domain.student.Student;
-import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.stereotype.AggregateRoot;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +22,6 @@ public class Gruppe {
   private String name;
   private Set<Student> studenten = new HashSet<>();
   private Repo repo;
-  private Tutor tutor;
   @Transient
   private Integer min;
   @Transient

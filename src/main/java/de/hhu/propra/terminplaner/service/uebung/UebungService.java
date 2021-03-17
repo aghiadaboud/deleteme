@@ -78,7 +78,7 @@ public class UebungService {
     List<Zeitslot> zeitslots = getAllZeitslotOfUebung(uebung);
     List<Zeitslot> reservierteZeitslots =
         zeitslots.stream()
-            .filter(zeitslot -> zeitslot.getReserviert())
+            .filter(Zeitslot::getReserviert)
             .collect(Collectors.toList());
     if (reservierteZeitslots.isEmpty()) {
       return Optional.empty();
@@ -138,5 +138,14 @@ public class UebungService {
     nachricht.put(true,
         "Übung wurde erstellt. Gehen Sie zur Uebung-Setup Seite um die neue Übung zu sehen!");
     return nachricht;
+  }
+
+  public List<Zeitslot> getAllZeitslotWithMoreThanOneTutor(Uebung uebung) {
+    List<Zeitslot> zeitslots = getAllZeitslotOfUebung(uebung);
+    List<Zeitslot> zeitslotsWithMoreThanOneTutor =
+        zeitslots.stream()
+            .filter(zeitslot -> zeitslot.tutorenAnzahl() > 1)
+            .collect(Collectors.toList());
+    return zeitslotsWithMoreThanOneTutor;
   }
 }

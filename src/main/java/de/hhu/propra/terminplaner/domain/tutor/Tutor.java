@@ -18,6 +18,7 @@ public class Tutor {
   private Long id;
   @NonNull
   private String githubname;
+  private Long gruppeid;
 
   public Tutor(@NonNull String githubname) {
     this.githubname = githubname;

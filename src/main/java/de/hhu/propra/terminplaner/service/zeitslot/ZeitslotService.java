@@ -131,4 +131,14 @@ public class ZeitslotService {
                                        @NonNull String uhrzeit) {
     return zeitslotRepository.findZeislotByUebungid(id, datum, uhrzeit);
   }
+
+  public void berechneNeueKapatzitaetAndZustandNachZuteilung(List<Zeitslot> zeitslots) {
+    for (Zeitslot zeitslot : zeitslots) {
+      zeitslot.setKapazitaet(zeitslot.tutorenAnzahl() - zeitslot.gruppenAnzahl());
+      if (zeitslot.getKapazitaet() == 0) {
+        zeitslot.setReserviert(true);
+      }
+      zeitslotRepository.save(zeitslot);
+    }
+  }
 }
