@@ -49,11 +49,18 @@ public class GruppenZuteilungService {
     verteileTutorenAufGruppen(allZeitslotOfUebung);
   }
 
-  public void passeGruppenAnIndividualanmeldung(Long uebungid) {
+  public void passeGruppenAnAndVerteielIndividualanmeldung(Long uebungid) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     //Optional<Uebung> letzteUebung = uebungService.ladeVorlage();
     List<Zeitslot> allZeitslotOfUebung =
         uebungService.getAllZeitslotWithMoreThanOneTutor(uebung);
+    passeGruppenAnIndividualanmeldung(allZeitslotOfUebung);
+    zeitslotService.berechneNeueKapatzitaetAndZustandNachZuteilung(
+        uebungService.getAllZeitslotOfUebung(uebung));
+    verteileTutorenAufGruppen(uebungService.getAllZeitslotOfUebung(uebung));
+  }
+
+  private void passeGruppenAnIndividualanmeldung(List<Zeitslot> allZeitslotOfUebung) {
     if (!allZeitslotOfUebung.isEmpty()) {
       for (Zeitslot zeitslot : allZeitslotOfUebung) {
         List<Tutor> allTutorOfZeitslot = zeitslotService.getAllTutorOfZeitslot(zeitslot);
@@ -69,9 +76,6 @@ public class GruppenZuteilungService {
         zeitslotService.saveZeitslot(zeitslot);
       }
     }
-    zeitslotService.berechneNeueKapatzitaetAndZustandNachZuteilung(
-        uebungService.getAllZeitslotOfUebung(uebung));
-    verteileTutorenAufGruppen(uebungService.getAllZeitslotOfUebung(uebung));
   }
 
 
