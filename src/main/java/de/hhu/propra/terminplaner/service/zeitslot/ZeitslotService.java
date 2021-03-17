@@ -5,14 +5,15 @@ import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.propra.terminplaner.repos.GruppeRepository;
+import de.hhu.propra.terminplaner.repos.UebungRepository;
 import de.hhu.propra.terminplaner.repos.ZeitslotRepository;
-import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,18 +22,19 @@ public class ZeitslotService {
   private ZeitslotRepository zeitslotRepository;
   private GruppeRepository gruppeRepository;
 
-  private UebungService uebungService;
+  private UebungRepository uebungRepository;
 
-  public ZeitslotService(ZeitslotRepository zeitslotRepository, UebungService uebungService,
+  public ZeitslotService(ZeitslotRepository zeitslotRepository, UebungRepository uebungRepository,
                          GruppeRepository gruppeRepository) {
     this.zeitslotRepository = zeitslotRepository;
-    this.uebungService = uebungService;
+    this.uebungRepository = uebungRepository;
     this.gruppeRepository = gruppeRepository;
   }
 
   public List<Zeitslot> findAll() {
     return zeitslotRepository.findAll();
   }
+
 
   public Map<Boolean, String> checkAnmeldungmodusAndaddZeitslotzuUebung(Uebung uebung,
                                                                         LocalDate datum,
@@ -62,7 +64,8 @@ public class ZeitslotService {
     gruppe.ifPresent(zeitslot::addGruppe);
     boolean addedZeitslot = uebung.addZeitslot(zeitslot);
     if (addedZeitslot) {
-      uebungService.saveUebung(uebung);
+      uebungRepository.save(uebung);
+      //uebungService.saveUebung(uebung);
       nachricht.put(true, "Termin wurde erfolgreich hinzugefügt");
       return nachricht;
     }
@@ -122,5 +125,10 @@ public class ZeitslotService {
   public Zeitslot findZeitslotByGruppeId(Long gruppeid) {
     Long id = gruppeRepository.findZeitslotIdByGruppeId(gruppeid);
     return findZeitslotById(id);
+  }
+
+  public Zeitslot findZeitslotByUebung(Long id, @NonNull LocalDate datum,
+                                       @NonNull String uhrzeit) {
+    return zeitslotRepository.findZeislotByUebungid(id, datum, uhrzeit);
   }
 }

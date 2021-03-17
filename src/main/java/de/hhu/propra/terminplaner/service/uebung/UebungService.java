@@ -5,6 +5,8 @@ import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.propra.terminplaner.repos.UebungRepository;
 import de.hhu.propra.terminplaner.repos.ZeitslotRepository;
+import de.hhu.propra.terminplaner.service.tutor.TutorService;
+import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +24,15 @@ public class UebungService {
 
   private ZeitslotRepository zeitslotRepository;
 
-  public UebungService(UebungRepository uebungRepository, ZeitslotRepository zeitslotRepository) {
+  private ZeitslotService zeitslotService;
+  private TutorService tutorService;
+
+  public UebungService(UebungRepository uebungRepository, ZeitslotRepository zeitslotRepository,
+                       ZeitslotService zeitslotService, TutorService tutorService) {
     this.uebungRepository = uebungRepository;
     this.zeitslotRepository = zeitslotRepository;
+    this.zeitslotService = zeitslotService;
+    this.tutorService = tutorService;
   }
 
   public List<Uebung> findAllUebungen() {
@@ -110,18 +118,23 @@ public class UebungService {
     return Optional.empty();
   }
 
+
   public Map<Boolean, String> createUebungFromVorlage(Long vorlageid, String newUebungname,
                                                       LocalDate von, LocalDate bis) {
     Map<Boolean, String> nachricht = new HashMap<>();
     Uebung vorlage = findUebungById(vorlageid);
     Uebung newUebung = new Uebung(newUebungname, vorlage.getGruppenanmeldung(), von, bis);
     for (Zeitslot zeitslot : vorlage.getZeitslots()) {
-      Zeitslot newZeitslot = new Zeitslot(zeitslot.getDatum(), zeitslot.getUhrzeit());
-      zeitslot.getTutoren()
-          .forEach(tutor -> newZeitslot.addTutor(new Tutor(tutor.getGithubname())));
-      newUebung.addZeitslot(newZeitslot);
+      zeitslotService.checkAnmeldungmodusAndaddZeitslotzuUebung(newUebung, zeitslot.getDatum(),
+          zeitslot.getUhrzeit());
+      Zeitslot newZeitslot = zeitslotService
+          .findZeitslotByUebung(newUebung.getId(), zeitslot.getDatum(), zeitslot.getUhrzeit());
+      zeitslot.getTutoren().forEach(
+          tutor -> tutorService.checkAnmeldungmodusAndaddTutorZuZeitslot(newZeitslot, new Tutor(
+              tutor.getGithubname()), newUebung.getGruppenanmeldung()));
+      zeitslotRepository.save(newZeitslot);
     }
-    uebungRepository.save(newUebung);
+    //uebungRepository.save(newUebung);
     nachricht.put(true,
         "Übung wurde erstellt. Gehen Sie zur Uebung-Setup Seite um die neue Übung zu sehen!");
     return nachricht;
