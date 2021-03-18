@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{../../static/dist/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container">
+    <div id="new-uebung">
+        <div style="margin-top:50px"></div>
+
+        <div th:if="${uebung != null}">
+            <h3 th:object="${uebung}" th:text="|*{name}|">Otto
+                Müller</h3>
+            <ul class="list-group">
+                <li class="list-group-item disabled">Zeitslots:</li>
+                <li th:each="zeitslot :${uebung.zeitslots}">
+                    <b th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|"> some Zeitslot</b>
+                    <ul class="list-group" style="list-style-type:none;">
+                        <li th:each="gruppe :${zeitslot.gruppen}">
+                            <b th:text="|${gruppe.name}: |">some Gruppe</b>
+                            <span th:each="tutor : ${zeitslot.tutoren}" th:if="${tutor.gruppeid == gruppe.id}"
+                                  th:text="${tutor.githubname}">some Tutor</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <hr>
+
+
+        <a href="/uebung/setup">Zurück zur Uebung-Setup</a>
+    </div>
+
+</div>
+
+<div style="margin-top:50px"></div>
+</body>
+</html>

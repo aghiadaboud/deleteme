@@ -41,26 +41,46 @@ public class GruppenZuteilungService {
   }
 
 
-  public void verteileTutorenAufGruppenGruppenanmeldung(Long uebungid) {
+  public void verteileTutorenAufGruppen(Long uebungid) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     //Optional<Uebung> letzteUebung = uebungService.ladeVorlage();
     List<Zeitslot> allZeitslotOfUebung =
         uebungService.getAllZeitslotOfUebung(uebung);
-    verteileTutorenAufGruppen(allZeitslotOfUebung);
+    verteileTutoren(allZeitslotOfUebung);
   }
 
-  public void passeGruppenAnAndVerteielIndividualanmeldung(Long uebungid) {
+  private void verteileTutoren(List<Zeitslot> zeitslots) {
+    if (!zeitslots.isEmpty()) {
+      for (Zeitslot zeitslot : zeitslots) {
+        List<Tutor> allTutorOfZeitslot = zeitslotService.getAllTutorOfZeitslot(zeitslot);
+        List<Gruppe> allGruppenOfZeitslot = zeitslotService.getAllGruppenOfZeitslot(zeitslot);
+        for (Gruppe gruppe : allGruppenOfZeitslot) {
+          Collections.shuffle(allTutorOfZeitslot);
+          Tutor tutor = allTutorOfZeitslot.get(0);
+          tutor.setGruppeid(gruppe.getId());
+          tutorRepository.save(tutor);
+          allTutorOfZeitslot.remove(tutor);
+        }
+      }
+      //hier wird githubmangment aufgerufen und repos erstellt
+    }
+  }
+
+  public Uebung passeGruppenAnIndividualanmeldung(Long uebungid) {
     Uebung uebung = uebungService.findUebungById(uebungid);
     //Optional<Uebung> letzteUebung = uebungService.ladeVorlage();
-    List<Zeitslot> allZeitslotOfUebung =
+    List<Zeitslot> allZeitslotWithMoreThanOneTutor =
         uebungService.getAllZeitslotWithMoreThanOneTutor(uebung);
-    passeGruppenAnIndividualanmeldung(allZeitslotOfUebung);
+    passeGruppenAn(allZeitslotWithMoreThanOneTutor);
     zeitslotService.berechneNeueKapatzitaetAndZustandNachZuteilung(
         uebungService.getAllZeitslotOfUebung(uebung));
-    verteileTutorenAufGruppen(uebungService.getAllZeitslotOfUebung(uebung));
+    uebung.setGruppenanmeldung(true);
+    uebungService.saveUebung(uebung);
+    return uebung;
+    //verteileTutorenAufGruppen(uebungService.getAllZeitslotOfUebung(uebung));
   }
 
-  private void passeGruppenAnIndividualanmeldung(List<Zeitslot> allZeitslotOfUebung) {
+  private void passeGruppenAn(List<Zeitslot> allZeitslotOfUebung) {
     if (!allZeitslotOfUebung.isEmpty()) {
       for (Zeitslot zeitslot : allZeitslotOfUebung) {
         List<Tutor> allTutorOfZeitslot = zeitslotService.getAllTutorOfZeitslot(zeitslot);
@@ -74,23 +94,6 @@ public class GruppenZuteilungService {
         befuellteGruppen.forEach(zeitslot::addGruppe);
         zeitslot.getGruppen().remove(gruppe);
         zeitslotService.saveZeitslot(zeitslot);
-      }
-    }
-  }
-
-
-  private void verteileTutorenAufGruppen(List<Zeitslot> zeitslots) {
-    if (!zeitslots.isEmpty()) {
-      for (Zeitslot zeitslot : zeitslots) {
-        List<Tutor> allTutorOfZeitslot = zeitslotService.getAllTutorOfZeitslot(zeitslot);
-        List<Gruppe> allGruppenOfZeitslot = zeitslotService.getAllGruppenOfZeitslot(zeitslot);
-        for (Gruppe gruppe : allGruppenOfZeitslot) {
-          Collections.shuffle(allTutorOfZeitslot);
-          Tutor tutor = allTutorOfZeitslot.get(0);
-          tutor.setGruppeid(gruppe.getId());
-          tutorRepository.save(tutor);
-          allTutorOfZeitslot.remove(tutor);
-        }
       }
     }
   }

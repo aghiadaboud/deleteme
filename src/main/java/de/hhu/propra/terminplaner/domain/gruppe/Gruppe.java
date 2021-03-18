@@ -23,9 +23,9 @@ public class Gruppe {
   private Set<Student> studenten = new HashSet<>();
   private Repo repo;
   @Transient
-  private Integer min;
+  private Integer min = 3;
   @Transient
-  private Integer max;
+  private Integer max = 5;
 
   public Gruppe(@NonNull String name) {
     this.name = name;

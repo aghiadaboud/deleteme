@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -147,5 +148,13 @@ public class UebungService {
             .filter(zeitslot -> zeitslot.tutorenAnzahl() > 1)
             .collect(Collectors.toList());
     return zeitslotsWithMoreThanOneTutor;
+  }
+
+  public boolean bereitsZugeteilt(Long id) {
+    Uebung uebung = findUebungById(id);
+    Set<Zeitslot> zeitslots = uebung.getZeitslots();
+    List<Tutor> tutoren = new ArrayList<>();
+    zeitslots.forEach(zeitslot -> tutoren.addAll(zeitslot.getTutoren()));
+    return tutoren.stream().anyMatch(tutor -> tutor.getGruppeid() != null);
   }
 }

@@ -9,6 +9,7 @@ import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
 import de.hhu.propra.terminplaner.service.zuteilung.GruppenZuteilungService;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,12 +47,6 @@ public class UebungController {
     this.gruppeService = gruppeService;
     this.studentService = studentService;
     this.gruppenZuteilungService = gruppenZuteilungService;
-  }
-
-  @GetMapping("/test")
-  public String test(Model model) {
-    gruppenZuteilungService.verteileGruppen(1L);
-    return "uebung/uebunguebersicht";
   }
 
 
@@ -97,6 +92,7 @@ public class UebungController {
     return "zeitslot/zeitslotuebersicht";
   }
 
+  //@Secured("ROLE_TUTOR")
   //@Secured("ROLE_ORGA")
   @GetMapping("/setup")
   public String uebungForm(Model model) {
@@ -110,6 +106,28 @@ public class UebungController {
   public String configureUebung(@ModelAttribute("uebung") Uebung uebung) {
     //hier muss eine createUebung methode aufgerufen, die checkt ob uebung valid, unf micht direkt saveUebung
     Uebung newUebung = uebungService.saveUebung(uebung);
+    return "redirect:/uebung/setup";
+  }
+
+  //@Secured("ROLE_TUTOR")
+  //@Secured("ROLE_ORGA")
+  @GetMapping("/{id}/zuteilung")
+  public String zuteilung(@PathVariable("id") Long id, Model model) {
+    Uebung uebung = uebungService.findUebungById(id);
+    model.addAttribute("uebung", uebung);
+    return "uebung/zuteilung";
+  }
+
+  //@Secured("ROLE_ORGA")
+  @GetMapping("/{id}/zuteilen")
+  public String zuteilen(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    if (uebungService.bereitsZugeteilt(id)) {
+      Map<Boolean, String> nachricht = new HashMap<>();
+      nachricht.put(false, "Tutoren wurden bereits zugeteilt");
+      checkResultAndSetupMessage(redirectAttributes, nachricht);
+      return "redirect:/uebung/setup";
+    }
+    gruppenZuteilungService.verteileTutorenAufGruppen(id);
     return "redirect:/uebung/setup";
   }
 
@@ -144,7 +162,12 @@ public class UebungController {
   public String editUebung(@PathVariable("uebungid") Long uebungid,
                            Model model) {
     Uebung uebung = uebungService.findUebungById(uebungid);
-    model.addAttribute("uebung", uebung);
+    if (uebung.getGruppenanmeldung()) {
+      model.addAttribute("uebung", uebung);
+    } else {
+      model.addAttribute("uebung",
+          gruppenZuteilungService.passeGruppenAnIndividualanmeldung(uebungid));
+    }
     return "uebung/editUebung";
   }
 
