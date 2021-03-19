@@ -30,7 +30,7 @@
         </di>
 
         <form method="post" th:action="@{addgruppe}" th:object="${gruppeform}">
-            <!--            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <div class="form-group">
                 <div>
                     <label class="mb-0" for="gruppename">gruppeName</label>

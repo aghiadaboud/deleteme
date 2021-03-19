@@ -14,6 +14,7 @@ import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
 import java.util.Arrays;
 import java.util.Map;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +48,7 @@ public class ZeitslotController {
   }
 
 
-  //@Secured("ROLE_ORGA")
+  @Secured("ROLE_ORGA")
   @GetMapping("/{id}/tutoren")
   public String tutoren(@PathVariable("id") Long id,
                         Model model) {
@@ -59,7 +60,7 @@ public class ZeitslotController {
     return "tutor/tutorform";
   }
 
-  //@Secured("ROLE_ORGA")
+  @Secured("ROLE_ORGA")
   @PostMapping("/{id}/addtutor")
   public String placeTutor(@RequestParam("uebungid") Long uebungid, @PathVariable("id") Long id,
                            @ModelAttribute("tutorForm") TutorForm tutorForm,

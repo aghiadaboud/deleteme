@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,12 +53,12 @@ public class UebungController {
 
   @GetMapping
   public String uebungen(Model model) {
-    model.addAttribute("uebung", new Uebung());
+    model.addAttribute("uebung", uebungService.createUebung());
     model.addAttribute("uebungen", uebungService.findAllUebungen());
     return "uebung/uebunguebersicht";
   }
 
-  //@Secured("ROLE_ORGA")
+  @Secured("ROLE_ORGA")
   @GetMapping("/vorlage")
   public String vorlage(Model model) {
     Optional<Uebung> uebungVorlage = uebungService.ladeVorlage();
@@ -65,7 +66,7 @@ public class UebungController {
     return "uebung/uebungvorlageform";
   }
 
-  //@Secured("ROLE_ORGA")
+  @Secured("ROLE_ORGA")
   @PostMapping("/vorlage")
   public String saveUebungFromVorlage(@RequestParam("vorlageid") Long vorlageid,
                                       @RequestParam("uebungname") String uebungname,
@@ -92,16 +93,15 @@ public class UebungController {
     return "zeitslot/zeitslotuebersicht";
   }
 
-  //@Secured("ROLE_TUTOR")
-  //@Secured("ROLE_ORGA")
+  @Secured({"ROLE_ORGA", "ROLE_TUTOR"})
   @GetMapping("/setup")
   public String uebungForm(Model model) {
-    model.addAttribute("uebung", new Uebung());
+    model.addAttribute("uebung", uebungService.createUebung());
     model.addAttribute("uebungen", uebungService.findAllUebungen());
     return "uebung/uebungform";
   }
 
-  //@Secured("ROLE_ORGA")
+  @Secured("ROLE_ORGA")
   @PostMapping("/setup")
   public String configureUebung(@ModelAttribute("uebung") Uebung uebung) {
     //hier muss eine createUebung methode aufgerufen, die checkt ob uebung valid, unf micht direkt saveUebung
@@ -109,8 +109,7 @@ public class UebungController {
     return "redirect:/uebung/setup";
   }
 
-  //@Secured("ROLE_TUTOR")
-  //@Secured("ROLE_ORGA")
+  @Secured({"ROLE_ORGA", "ROLE_TUTOR"})
   @GetMapping("/{id}/zuteilung")
   public String zuteilung(@PathVariable("id") Long id, Model model) {
     Uebung uebung = uebungService.findUebungById(id);
@@ -118,9 +117,10 @@ public class UebungController {
     return "uebung/zuteilung";
   }
 
-  //@Secured("ROLE_ORGA")
-  @GetMapping("/{id}/zuteilen")
-  public String zuteilen(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+  @Secured("ROLE_ORGA")
+  @PostMapping("/{id}/zuteilen")
+  public String zuteilen(@PathVariable("id") Long id, RedirectAttributes redirectAttributes)
+      throws Exception {
     if (uebungService.bereitsZugeteilt(id)) {
       Map<Boolean, String> nachricht = new HashMap<>();
       nachricht.put(false, "Tutoren wurden bereits zugeteilt");
@@ -132,7 +132,7 @@ public class UebungController {
   }
 
 
-  //@Secured("ROLE_ORGA")
+  @Secured("ROLE_ORGA")
   @GetMapping("/{id}/zeitslotform")
   public String zeitslotsForm(@PathVariable("id") Long id, Model model) {
     Uebung uebung = uebungService.findUebungById(id);
@@ -142,7 +142,7 @@ public class UebungController {
   }
 
 
-  //@Secured("ROLE_ORGA")
+  @Secured("ROLE_ORGA")
   @PostMapping("/{id}/addzeitslot")
   public String placeZeitslot(@PathVariable("id") Long id,
                               @RequestParam("datum") @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -157,7 +157,7 @@ public class UebungController {
   }
 
 
-  //@Secured("ROLE_ORGA")
+  @Secured("ROLE_ORGA")
   @GetMapping("/{uebungid}/edit")
   public String editUebung(@PathVariable("uebungid") Long uebungid,
                            Model model) {

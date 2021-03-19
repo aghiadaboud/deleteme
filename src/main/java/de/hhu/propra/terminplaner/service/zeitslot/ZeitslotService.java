@@ -1,5 +1,8 @@
 package de.hhu.propra.terminplaner.service.zeitslot;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+
 import de.hhu.propra.terminplaner.domain.gruppe.Gruppe;
 import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
@@ -15,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ZeitslotService {
@@ -86,14 +90,8 @@ public class ZeitslotService {
   }
 
   public Zeitslot findZeitslotById(Long id) {
-    Optional<Zeitslot> zeitslot = zeitslotRepository.findById(id);
-    if (zeitslot.isPresent()) {
-      return zeitslot.get();
-    } else {
-      throw new NullPointerException("kein Zeitslot für diesen ID vorhanden");
-    }
-//        return zeitslotRepository.findById(id).orElseThrow(() ->
-//                 new ResponseStatusException(NOT_FOUND, "Kein Zeitslot mit id " + id + " vorhanden."));
+    return zeitslotRepository.findById(id).orElseThrow(() ->
+        new ResponseStatusException(NOT_FOUND, "Kein Zeitslot mit id " + id + " vorhanden."));
   }
 
 

@@ -1,5 +1,8 @@
 package de.hhu.propra.terminplaner.service.gruppe;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+
 import de.hhu.propra.terminplaner.domain.gruppe.Gruppe;
 import de.hhu.propra.terminplaner.domain.student.Student;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
@@ -12,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class GruppeService {
@@ -66,9 +70,6 @@ public class GruppeService {
     //      return nachricht.put(false, "Gruppeinfos sind nicht gültig");
     //    }
     zeitslot.addGruppe(gruppe);
-//    zeitslot.decreaseKapazitaet(1);
-//    zeitslot.setReserviert(reserviert);
-//    zeitslotService.saveZeitslot(zeitslot);
     zeitslotService
         .decreaseZeitslotKapazitaetAndUpdateZustand(zeitslot, 1, Optional.of(reserviert));
     nachricht.put(true, "Gruppe erfolgreich hinzugefügt");
@@ -101,14 +102,9 @@ public class GruppeService {
   }
 
   public Gruppe findGruppeById(Long id) {
-    Optional<Gruppe> gruppe = gruppeRepository.findById(id);
-    if (gruppe.isPresent()) {
-      return gruppe.get();
-    } else {
-      throw new NullPointerException("keine Gruppe für diesen ID vorhanden");
-    }
-    //        return gruppeRepository.findById(id).orElseThrow(() ->
-//                 new ResponseStatusException(NOT_FOUND, "Keine Gruppe mit id " + id + " vorhanden."));
+
+    return gruppeRepository.findById(id).orElseThrow(() ->
+        new ResponseStatusException(NOT_FOUND, "Keine Gruppe mit id " + id + " vorhanden."));
 
   }
 

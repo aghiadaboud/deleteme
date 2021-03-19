@@ -1,5 +1,8 @@
 package de.hhu.propra.terminplaner.service.uebung;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+
 import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
@@ -17,6 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UebungService {
@@ -41,21 +45,12 @@ public class UebungService {
   }
 
   public Uebung findUebungById(Long uebungid) {
-    Optional<Uebung> uebung = uebungRepository.findById(uebungid);
-
-    if (uebung.isPresent()) {
-      return uebung.get();
-    } else {
-      throw new NullPointerException("keine Uebung für diese ID vorhanden");
-    }
-//        return uebungRepository.findById(uebungid).orElseThrow(() ->
-//                new ResponseStatusException(NOT_FOUND, "Keine Uebung mit id " + uebungid + " vorhanden."));
+    return uebungRepository.findById(uebungid).orElseThrow(() ->
+        new ResponseStatusException(NOT_FOUND, "Keine Uebung mit id " + uebungid + " vorhanden."));
   }
 
-  public Long createUebung(String name, Boolean gruppenanmeldung, LocalDate von, LocalDate bis) {
-    Uebung uebung = new Uebung(name, gruppenanmeldung, von, bis);
-    uebungRepository.save(uebung);
-    return uebung.getId();
+  public Uebung createUebung() {
+    return new Uebung();
   }
 
 
@@ -143,11 +138,9 @@ public class UebungService {
 
   public List<Zeitslot> getAllZeitslotWithMoreThanOneTutor(Uebung uebung) {
     List<Zeitslot> zeitslots = getAllZeitslotOfUebung(uebung);
-    List<Zeitslot> zeitslotsWithMoreThanOneTutor =
-        zeitslots.stream()
-            .filter(zeitslot -> zeitslot.tutorenAnzahl() > 1)
-            .collect(Collectors.toList());
-    return zeitslotsWithMoreThanOneTutor;
+    return zeitslots.stream()
+        .filter(zeitslot -> zeitslot.tutorenAnzahl() > 1)
+        .collect(Collectors.toList());
   }
 
   public boolean bereitsZugeteilt(Long id) {

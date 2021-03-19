@@ -40,6 +40,5 @@ out/
 ### Environment ###
 *.env
 
-#####
+### GithubApi###
 *.pem
-*.der

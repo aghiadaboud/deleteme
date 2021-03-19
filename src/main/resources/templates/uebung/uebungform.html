@@ -74,9 +74,11 @@
                         siehe Bericht und bearbeite Übung
                     </a>
                     <span>|</span>
-                    <a href="#" th:href="@{/uebung/{id}/zuteilen(id=${uebung.id})}">
-                        Zuteilung starten
-                    </a>
+                    <form method="post" style="display:inline!important;"
+                          th:action="@{/uebung/{id}/zuteilen(id=${uebung.id})}">
+                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+                        <button type="submit">Zuteilung starten</button>
+                    </form>
                     <span>|</span>
                     <a href="#" th:href="@{/uebung/{id}/zuteilung(id=${uebung.id})}">
                         Tutoren-Zuteilung sehen

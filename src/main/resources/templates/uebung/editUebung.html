@@ -33,10 +33,9 @@
                           th:text="|(hat Kapazität 5 und ${gruppe.size()} Mitglieder)|"></span>
                     <span th:if="${!uebung.gruppenanmeldung}"
                           th:text="|(hat Kapazität ${zeitslot.kapazitaet} und ${gruppe.size()} Mitglieder)|"></span>
-                    <!--                    <span th:text="|(hat ${gruppe.size()} Mitglieder)|">Gruppe</span>-->
                     <form method="post" style="display:inline!important;"
                           th:action="@{/gruppe/{gruppeid}/removegruppe(gruppeid=${gruppe.id})}">
-                        <!--                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
                         <input name="zeitslotid" th:value="${zeitslot.id}" type="hidden">
                         <input name="uebungid" th:value="${uebung.id}" type="hidden">
                         <button class="delete" type="submit">Gruppe Löschen</button>
@@ -45,7 +44,7 @@
                         <span th:text="${student.githubname}"></span>
                         <form method="post" style="display:inline!important;"
                               th:action="@{/gruppe/{gruppeid}/movestudent(gruppeid=${gruppe.id})}">
-                            <!--                            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+                            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
                             <input name="studentid" th:value="${student.id}" type="hidden">
                             <input name="zeitslotidold" th:value="${zeitslot.id}" type="hidden">
                             <input name="uebungid" th:value="${uebung.id}" type="hidden">

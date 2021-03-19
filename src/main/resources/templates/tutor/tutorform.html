@@ -27,7 +27,7 @@
         </div>
 
         <form method="post" th:action="@{addtutor}" th:object="${tutorform}">
-            <!--            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <input name="uebungid" th:value="${uebung.id}" type="hidden">
             <div class="form-group">
                 <div>

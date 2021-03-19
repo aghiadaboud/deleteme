@@ -40,7 +40,7 @@
         <hr>
 
         <form action="/uebung/vorlage" method="post" th:if="${uebung != null}">
-            <!--            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <input name="vorlageid" th:value="${uebung.id}" type="hidden">
             <div class="form-group">
                 <label for="uebungname">Name der neuen Uebung:</label>

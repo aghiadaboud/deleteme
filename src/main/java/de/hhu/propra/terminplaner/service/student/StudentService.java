@@ -31,9 +31,6 @@ public class StudentService {
     } else {
       throw new NullPointerException("kein Student für diese ID vorhanden");
     }
-    //        return gruppeRepository.findById(id).orElseThrow(() ->
-//                 new ResponseStatusException(NOT_FOUND, "Keine Student mit id " + id + " vorhanden."));
-
   }
 
 

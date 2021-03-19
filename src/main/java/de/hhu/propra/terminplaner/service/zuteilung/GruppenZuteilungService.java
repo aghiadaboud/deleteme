@@ -6,6 +6,7 @@ import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.propra.terminplaner.repos.TutorRepository;
+import de.hhu.propra.terminplaner.service.github.GithubService;
 import de.hhu.propra.terminplaner.service.gruppe.GruppeService;
 import de.hhu.propra.terminplaner.service.student.StudentService;
 import de.hhu.propra.terminplaner.service.tutor.TutorService;
@@ -28,28 +29,32 @@ public class GruppenZuteilungService {
   private TutorService tutorService;
   private StudentService studentService;
   private TutorRepository tutorRepository;
+  private GithubService githubService;
 
   public GruppenZuteilungService(UebungService uebungService, ZeitslotService zeitslotService,
                                  TutorService tutorService, GruppeService gruppeService,
-                                 StudentService studentService, TutorRepository tutorRepository) {
+                                 StudentService studentService, TutorRepository tutorRepository,
+                                 GithubService githubService) {
     this.uebungService = uebungService;
     this.zeitslotService = zeitslotService;
     this.tutorService = tutorService;
     this.gruppeService = gruppeService;
     this.studentService = studentService;
     this.tutorRepository = tutorRepository;
+    this.githubService = githubService;
   }
 
 
-  public void verteileTutorenAufGruppen(Long uebungid) {
+  public void verteileTutorenAufGruppen(Long uebungid) throws Exception {
     Uebung uebung = uebungService.findUebungById(uebungid);
     //Optional<Uebung> letzteUebung = uebungService.ladeVorlage();
     List<Zeitslot> allZeitslotOfUebung =
         uebungService.getAllZeitslotOfUebung(uebung);
-    verteileTutoren(allZeitslotOfUebung);
+    verteileTutoren(uebung, allZeitslotOfUebung);
   }
 
-  private void verteileTutoren(List<Zeitslot> zeitslots) {
+  private void verteileTutoren(Uebung uebung,
+                               List<Zeitslot> zeitslots) throws Exception {
     if (!zeitslots.isEmpty()) {
       for (Zeitslot zeitslot : zeitslots) {
         List<Tutor> allTutorOfZeitslot = zeitslotService.getAllTutorOfZeitslot(zeitslot);
@@ -62,7 +67,7 @@ public class GruppenZuteilungService {
           allTutorOfZeitslot.remove(tutor);
         }
       }
-      //hier wird githubmangment aufgerufen und repos erstellt
+      githubService.createRepositoryForUebung(uebung);
     }
   }
 
@@ -77,7 +82,6 @@ public class GruppenZuteilungService {
     uebung.setGruppenanmeldung(true);
     uebungService.saveUebung(uebung);
     return uebung;
-    //verteileTutorenAufGruppen(uebungService.getAllZeitslotOfUebung(uebung));
   }
 
   private void passeGruppenAn(List<Zeitslot> allZeitslotOfUebung) {

@@ -28,7 +28,7 @@
 
     <a href="/oauth2/authorization/github" th:if="!${user}">Login using GitHub</a></li>
     <form action="/logout" method="post" th:if="${user}">
-        <!--        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
         <button type="submit">Logout</button>
     </form>
     <hr>
@@ -40,7 +40,7 @@
     <!--        <hr>-->
     <!--    </div>-->
     <div style="margin-top:45px"></div>
-    <div class="row">
+    <div class="row" th:if="${user}">
         <div class="col">
             <a href="/uebung">Uebungen</a>
         </div>

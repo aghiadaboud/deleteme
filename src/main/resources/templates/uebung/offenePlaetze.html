@@ -26,7 +26,7 @@
 
 
         <div class="list-group" th:each="zeitslot : ${uebung.zeitslots}">
-            <!--            <li><h3 th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h3></li>-->
+            <li><h3 th:text="|${zeitslot.datum} ${zeitslot.uhrzeit}|">Otto Müller</h3></li>
             <ul class="list-group">
                 <li class="list-group-item disabled">Gruppen</li>
                 <li th:each="gruppe : ${zeitslot.gruppen}">
@@ -35,13 +35,11 @@
                           th:text="|(hat Kapazität 5 und ${gruppe.size()} Mitglieder)|"></span>
                     <span th:if="${!uebung.gruppenanmeldung}"
                           th:text="|(hat Kapazität ${zeitslot.kapazitaet} und ${gruppe.size()} Mitglieder)|"></span>
-                    <!--                    <span th:text="|(hat ${gruppe.size()} Mitglieder)|"></span>-->
                     <form method="post" style="display:inline!important;"
                           th:action="@{/gruppe/{gruppeid}/addstudent(gruppeid=${gruppe.id})}">
-                        <!--                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
                         <input name="zeitslotid" th:value="${zeitslot.id}" type="hidden">
                         <input name="uebungid" th:value="${uebung.id}" type="hidden">
-                        <input id="studentgithubname" name="studentgithubname" type="text">
                         <button class="delete" type="submit">Gruppe beitreten</button>
                     </form>
                 </li>
