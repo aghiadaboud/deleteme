@@ -32,7 +32,7 @@
         </div>
 
         <form action="/uebung/setup" method="post" th:object="${uebung}">
-            <!--            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>-->
+            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <div class="form-group">
                 <label for="name">Uebungname:</label>
                 <input id="name" name="name" th:field="*{name}" type="text">

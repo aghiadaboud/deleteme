@@ -26,11 +26,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class GithubService {
 
-  //openssl pkcs8 -topk8 -inform PEM -outform DER -in key.pem -out key.der -nocrypt
-//  private String appIdD = "105841";
-//  private long installation = 15493669;
-//  private String organisationName = "testorganisationaltEnter";
-
+  /*openssl pkcs8 -topk8 -inform PEM -outform DER -in key.pem -out key.der -nocrypt
+   * command zum Erstellen key.der aus dem key.pem*/
   @Value("${appId}")
   private String appIdD;
   @Value("${installationId}")
@@ -49,7 +46,7 @@ public class GithubService {
   }
 
   private void init() throws Exception {
-    String jwt = JwtHelper.createJWT("key.der", appIdD, 600000);
+    String jwt = JwtHelper.createJWT(keylocation, appIdD, 600000);
     GitHub preAuth = new GitHubBuilder().withJwtToken(jwt).build();
     GHAppInstallation appInstallation = preAuth.getApp().getInstallationById(installation);
     GHAppInstallationToken token = appInstallation.createToken().create();

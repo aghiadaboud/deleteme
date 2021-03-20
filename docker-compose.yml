@@ -6,36 +6,32 @@ services:
   database:
     container_name: mysql
     image: mysql:latest
-    command: --default-authentication-plugin=mysql_native_password
     restart: always
     volumes:
       - ./src/main/resources/database:/docker-entrypoint-initdb.d/
+      - ./terminplanerdb/mysql/data:/var/lib/mysql
     environment:
       - "MYSQL_DATABASE=${MYSQL_DATABASE}"
       - "MYSQL_USER=${MYSQL_USER}"
       - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
       - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
-    healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "--password=password" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+
 
   terminplaner:
     container_name: terminplaner
-    command: [ "app/wait-for-it.sh", "database:3306", "&&", "java",  "-jar", "app/app.jar" ]
+    command: [ "/app/wait-for-it.sh", "mysql:3306", "--timeout=0", "--", "java",  "-jar", "/app/app.jar" ]
     depends_on:
       - database
     build:
       context: .
       dockerfile: Dockerfile
-    #    working_dir: /app
     ports:
       - "8080:8080"
     environment:
       - "MYSQL_DATABASE=${MYSQL_DATABASE}"
       - "MYSQL_USER=${MYSQL_USER}"
       - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
       - "CLIENT_ID=${CLIENT_ID}"
       - "CLIENT_SECRET=${CLIENT_SECRET}"
       - "APP_ID=${APP_ID}"
