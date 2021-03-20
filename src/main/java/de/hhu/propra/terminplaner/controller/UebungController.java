@@ -103,9 +103,10 @@ public class UebungController {
 
   @Secured("ROLE_ORGA")
   @PostMapping("/setup")
-  public String configureUebung(@ModelAttribute("uebung") Uebung uebung) {
-    //hier muss eine createUebung methode aufgerufen, die checkt ob uebung valid, unf micht direkt saveUebung
-    Uebung newUebung = uebungService.saveUebung(uebung);
+  public String configureUebung(@ModelAttribute("uebung") Uebung uebung,
+                                RedirectAttributes redirectAttributes) {
+    Map<Boolean, String> created = uebungService.saveUebung(uebung);
+    checkResultAndSetupMessage(redirectAttributes, created);
     return "redirect:/uebung/setup";
   }
 

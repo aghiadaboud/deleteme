@@ -90,9 +90,15 @@ public class UebungService {
     uebungRepository.save(uebung);
   }
 
-  public Uebung saveUebung(Uebung uebung) {
-    uebungRepository.save(uebung);
-    return uebung;
+  public Map<Boolean, String> saveUebung(Uebung uebung) {
+    Map<Boolean, String> nachricht = new HashMap<>();
+    if (validUebung(uebung)) {
+      uebungRepository.save(uebung);
+      nachricht.put(true, "Übung wurde erfolgreich erstellt");
+      return nachricht;
+    }
+    nachricht.put(false, "Übungseingaben sind nicht gültig");
+    return nachricht;
   }
 
   public Uebung findUebungByZeitslotId(Long id) {
@@ -120,6 +126,10 @@ public class UebungService {
     Map<Boolean, String> nachricht = new HashMap<>();
     Uebung vorlage = findUebungById(vorlageid);
     Uebung newUebung = new Uebung(newUebungname, vorlage.getGruppenanmeldung(), von, bis);
+    if (!validUebung(newUebung) || von.isBefore(vorlage.getAnmeldungfristbis())) {
+      nachricht.put(false, "Übungseingaben sind nicht gültig");
+      return nachricht;
+    }
     for (Zeitslot zeitslot : vorlage.getZeitslots()) {
       zeitslotService.checkAnmeldungmodusAndaddZeitslotzuUebung(newUebung, zeitslot.getDatum(),
           zeitslot.getUhrzeit());
@@ -149,5 +159,13 @@ public class UebungService {
     List<Tutor> tutoren = new ArrayList<>();
     zeitslots.forEach(zeitslot -> tutoren.addAll(zeitslot.getTutoren()));
     return tutoren.stream().anyMatch(tutor -> tutor.getGruppeid() != null);
+  }
+
+  private boolean validUebung(Uebung uebung) {
+    LocalDate anmeldungfristBeginn = uebung.getAnmeldungfristvon();
+    LocalDate anmeldungfristEnde = uebung.getAnmeldungfristbis();
+    LocalDate now = LocalDate.now();
+    return anmeldungfristBeginn.isBefore(anmeldungfristEnde)
+        && (anmeldungfristBeginn.isAfter(now) || anmeldungfristBeginn.isEqual(now));
   }
 }

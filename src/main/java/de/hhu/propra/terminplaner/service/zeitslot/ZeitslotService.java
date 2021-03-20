@@ -60,10 +60,10 @@ public class ZeitslotService {
       String uhrzeit,
       Optional<Gruppe> gruppe) {
     Map<Boolean, String> nachricht = new HashMap<>();
-//    zeitslot valid??liegt nach Anmeldungsfrist?
-//        if (!validZeitslot(zeitslot)) {
-//      return nachricht.put(false, "Termininfos sind nicht gültig");
-//    }
+    if (!validZeitslot(uebung, datum)) {
+      nachricht.put(false, "Der Termin soll nach der Anmeldungsfrist stattfinden");
+      return nachricht;
+    }
     Zeitslot zeitslot = new Zeitslot(datum, uhrzeit);
     gruppe.ifPresent(zeitslot::addGruppe);
     boolean addedZeitslot = uebung.addZeitslot(zeitslot);
@@ -138,5 +138,10 @@ public class ZeitslotService {
       }
       zeitslotRepository.save(zeitslot);
     }
+  }
+
+  private boolean validZeitslot(Uebung uebung, LocalDate termin) {
+    LocalDate anmeldungfristEnde = uebung.getAnmeldungfristbis();
+    return termin.isAfter(anmeldungfristEnde);
   }
 }

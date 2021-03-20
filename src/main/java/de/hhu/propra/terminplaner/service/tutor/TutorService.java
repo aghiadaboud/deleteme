@@ -29,10 +29,10 @@ public class TutorService {
   private Map<Boolean, String> addTutorZuZeitslotAndIncreaseKapazitaet(
       Zeitslot zeitslot, Tutor tutor, int anzahl) {
     Map<Boolean, String> nachricht = new HashMap<>();
-    //    tutor valid??
-    //        if (!validTutor(tutor)) {
-    //      return nachricht.put(false, "Tutorinfos sind nicht gültig");
-    //    }
+    if (tutorAlreadyExists(zeitslot, tutor)) {
+      nachricht.put(false, "Tutor wurde bereits hinzugefügt");
+      return nachricht;
+    }
     boolean addedTutor = zeitslot.addTutor(tutor);
     if (addedTutor) {
       zeitslot.increaseZeitslotKapazitaet(anzahl);
@@ -42,6 +42,11 @@ public class TutorService {
     }
     nachricht.put(false, "Tutor konnte nicht hinzugefügt werden");
     return nachricht;
+  }
+
+  private boolean tutorAlreadyExists(Zeitslot zeitslot, Tutor newtutor) {
+    return zeitslot.getTutoren().stream()
+        .anyMatch(tutor -> tutor.getGithubname().equals(newtutor.getGithubname()));
   }
 
 }

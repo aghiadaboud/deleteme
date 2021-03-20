@@ -65,10 +65,10 @@ public class GruppeService {
                                                                         Gruppe gruppe,
                                                                         boolean reserviert) {
     Map<Boolean, String> nachricht = new HashMap<>();
-    //    gruppe valid??
-    //    if (!validGruppe(gruppe)) {
-    //      return nachricht.put(false, "Gruppeinfos sind nicht gültig");
-    //    }
+    if (!validGruppe(gruppe)) {
+      nachricht.put(false, "Gruppeeingaben sind nicht gültig");
+      return nachricht;
+    }
     zeitslot.addGruppe(gruppe);
     zeitslotService
         .decreaseZeitslotKapazitaetAndUpdateZustand(zeitslot, 1, Optional.of(reserviert));
@@ -110,5 +110,9 @@ public class GruppeService {
 
   public void saveGruppe(Gruppe gruppe) {
     gruppeRepository.save(gruppe);
+  }
+
+  private boolean validGruppe(Gruppe gruppe) {
+    return gruppe.getStudenten().size() >= 1;
   }
 }

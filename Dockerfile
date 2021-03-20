@@ -3,7 +3,7 @@ WORKDIR /terminplanerBuild
 COPY . /terminplanerBuild
 RUN gradle bootJar
 
-
+#FROM adoptopenjdk/openjdk11:alpine-jre
 FROM adoptopenjdk:11-jre-hotspot
 WORKDIR /app
 COPY --from=BUILD /terminplanerBuild/build/libs/*.jar \
