@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Übungform</title>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
     <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
@@ -35,7 +35,7 @@
             <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
             <div class="form-group">
                 <label for="name">Uebungname:</label>
-                <input id="name" name="name" th:field="*{name}" type="text">
+                <input id="name" name="name" required th:field="*{name}" type="text">
                 <div>
                     <input id="Gruppenanmeldung" name="Anmeldemodus" th:field="*{gruppenanmeldung}" type="radio"
                            value="True">
@@ -46,9 +46,9 @@
                 </div>
                 <div>
                     <label for="von">Von:</label>
-                    <input id="von" name="von" th:field="*{anmeldungfristvon}" type="date">
+                    <input id="von" name="von" required th:field="*{anmeldungfristvon}" type="date">
                     <label for="bis">Bis:</label>
-                    <input id="bis" name="bis" th:field="*{anmeldungfristbis}" type="date">
+                    <input id="bis" name="bis" required th:field="*{anmeldungfristbis}" type="date">
                 </div>
 
 
@@ -71,14 +71,8 @@
                     </a>
                     <span>|</span>
                     <a href="#" th:href="@{/uebung/{id}/edit(id=${uebung.id})}">
-                        siehe Bericht und bearbeite Übung
+                        siehe Bericht, bearbeite Übung und starte Zuteilung
                     </a>
-                    <span>|</span>
-                    <form method="post" style="display:inline!important;"
-                          th:action="@{/uebung/{id}/zuteilen(id=${uebung.id})}">
-                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-                        <button type="submit">Zuteilung starten</button>
-                    </form>
                     <span>|</span>
                     <a href="#" th:href="@{/uebung/{id}/zuteilung(id=${uebung.id})}">
                         Tutoren-Zuteilung sehen

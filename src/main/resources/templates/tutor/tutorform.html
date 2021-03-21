@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tutorform</title>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
     <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
@@ -32,8 +32,8 @@
             <div class="form-group">
                 <div>
                     <label class="mb-0" for="name">Tutor-GithubName</label>
-                    <input class="form-control mb-2" id="name" name="name" th:field="*{name}"
-                           type="text">
+                    <input class="form-control mb-2" id="name" name="name" required
+                           th:field="*{name}" type="text">
                 </div>
                 <input class="btn btn-primary" type="submit" value="Hinzufügen">
             </div>

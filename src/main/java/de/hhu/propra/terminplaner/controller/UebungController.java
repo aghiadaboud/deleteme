@@ -126,10 +126,10 @@ public class UebungController {
       Map<Boolean, String> nachricht = new HashMap<>();
       nachricht.put(false, "Tutoren wurden bereits zugeteilt");
       checkResultAndSetupMessage(redirectAttributes, nachricht);
-      return "redirect:/uebung/setup";
+      return "redirect:/uebung/" + id + "/edit";
     }
     gruppenZuteilungService.verteileTutorenAufGruppen(id);
-    return "redirect:/uebung/setup";
+    return "redirect:/uebung/" + id + "/edit";
   }
 
 

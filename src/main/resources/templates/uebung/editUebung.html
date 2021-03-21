@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Übungsbearbeitung</title>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
     <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
@@ -38,7 +38,7 @@
                         <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
                         <input name="zeitslotid" th:value="${zeitslot.id}" type="hidden">
                         <input name="uebungid" th:value="${uebung.id}" type="hidden">
-                        <button class="delete" type="submit">Gruppe Löschen</button>
+                        <button class="btn btn-primary mt-1" type="submit">Gruppe Löschen</button>
                     </form>
                     <div th:each="student : ${gruppe.studenten}">
                         <span th:text="${student.githubname}"></span>
@@ -48,7 +48,7 @@
                             <input name="studentid" th:value="${student.id}" type="hidden">
                             <input name="zeitslotidold" th:value="${zeitslot.id}" type="hidden">
                             <input name="uebungid" th:value="${uebung.id}" type="hidden">
-                            <button class="delete" type="submit">Verschiebe nach</button>
+                            <button class="btn btn-primary mt-1" type="submit">Verschiebe nach</button>
                             <select aria-label="Default select example" class="form-select" id="gruppeidnew"
                                     name="gruppeidnew">
                                 <th:block th:each="newzeitslot : ${uebung.zeitslots}">
@@ -63,6 +63,14 @@
                     </div>
                 </li>
             </ul>
+        </div>
+
+        <div style="margin-top:50px"></div>
+        <div>
+            <form method="post" th:action="@{zuteilen}">
+                <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+                <button class="btn btn-primary mt-1" type="submit">Zuteilung starten und Repositories erstellen</button>
+            </form>
         </div>
 
         <div>

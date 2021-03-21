@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Übungsvorlage</title>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
     <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
@@ -25,6 +25,8 @@
         <div th:if="${uebung != null}">
             <h3 th:object="${uebung}" th:text="|Wir haben Uebung *{name} gefunden|">Otto
                 Müller</h3>
+            <h3>Anmeldungsfrist von <span th:text="${uebung.anmeldungfristvon}"></span> bis <span
+                    th:text="${uebung.anmeldungfristbis}"></span></h3>
             <ul class="list-group">
                 <li class="list-group-item disabled">Zeitslots:</li>
                 <li th:each="zeitslot :${uebung.zeitslots}">
@@ -44,7 +46,7 @@
             <input name="vorlageid" th:value="${uebung.id}" type="hidden">
             <div class="form-group">
                 <label for="uebungname">Name der neuen Uebung:</label>
-                <input id="uebungname" name="uebungname" type="text">
+                <input id="uebungname" name="uebungname" required type="text">
                 <div>
                     Anmeldungsfrist der neuen Uebung:
                 </div>
