@@ -8,7 +8,6 @@ import de.hhu.propra.terminplaner.domain.tutor.Tutor;
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
 import de.hhu.propra.terminplaner.domain.zeitslot.Zeitslot;
 import de.hhu.propra.terminplaner.service.gruppe.GruppeService;
-import de.hhu.propra.terminplaner.service.student.StudentService;
 import de.hhu.propra.terminplaner.service.tutor.TutorService;
 import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
@@ -35,16 +34,13 @@ public class ZeitslotController {
   private GruppeService gruppeService;
 
   private TutorService tutorService;
-  private StudentService studentService;
 
   public ZeitslotController(UebungService uebungService, ZeitslotService zeitslotService,
-                            TutorService tutorService, GruppeService gruppeService,
-                            StudentService studentService) {
+                            TutorService tutorService, GruppeService gruppeService) {
     this.uebungService = uebungService;
     this.zeitslotService = zeitslotService;
     this.tutorService = tutorService;
     this.gruppeService = gruppeService;
-    this.studentService = studentService;
   }
 
 

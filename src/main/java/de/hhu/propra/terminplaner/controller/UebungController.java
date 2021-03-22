@@ -2,9 +2,6 @@ package de.hhu.propra.terminplaner.controller;
 
 
 import de.hhu.propra.terminplaner.domain.uebung.Uebung;
-import de.hhu.propra.terminplaner.service.gruppe.GruppeService;
-import de.hhu.propra.terminplaner.service.student.StudentService;
-import de.hhu.propra.terminplaner.service.tutor.TutorService;
 import de.hhu.propra.terminplaner.service.uebung.UebungService;
 import de.hhu.propra.terminplaner.service.zeitslot.ZeitslotService;
 import de.hhu.propra.terminplaner.service.zuteilung.GruppenZuteilungService;
@@ -30,23 +27,13 @@ public class UebungController {
 
   private UebungService uebungService;
   private ZeitslotService zeitslotService;
-
-  private GruppeService gruppeService;
-
-  private TutorService tutorService;
-  private StudentService studentService;
   private GruppenZuteilungService gruppenZuteilungService;
 
 
   public UebungController(UebungService uebungService, ZeitslotService zeitslotService,
-                          TutorService tutorService, GruppeService gruppeService,
-                          StudentService studentService,
                           GruppenZuteilungService gruppenZuteilungService) {
     this.uebungService = uebungService;
     this.zeitslotService = zeitslotService;
-    this.tutorService = tutorService;
-    this.gruppeService = gruppeService;
-    this.studentService = studentService;
     this.gruppenZuteilungService = gruppenZuteilungService;
   }
 
