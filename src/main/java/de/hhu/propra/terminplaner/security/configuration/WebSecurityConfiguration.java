@@ -21,6 +21,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private RoleLoader roleLoader = new RoleLoader();
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests(a -> a
@@ -55,8 +57,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
       //Read lists from some config. hardcoded only for example purposes.
-      List<String> orgaList = List.of("RutenkolkC", "aghiadaboud", "YaSaRRR", "Sejo86");
-      List<String> tutorInnenList = List.of("tutor1GitHubHandle", "ha");
+      List<String> orgaList = roleLoader.getOrganisatoren();
+      List<String> tutorInnenList = roleLoader.getTutoren();
 
 
       // Prüfen auf Rollen
