@@ -41,7 +41,7 @@ Befehl `openssl pkcs8 -topk8 -inform PEM -outform DER -in key.pem -out key.der -
 ## Benutzte Frameworks/Tools/Programme/APIs/Libraries
 
 - Docker und Docker-Compose
-- Spring / Spring Boot / Spring JDBC API
+- Spring / Spring Boot / Spring Data JDBC
 - Gradle
 - MySQL
 - Thymeleaf
