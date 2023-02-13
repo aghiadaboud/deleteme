@@ -12,9 +12,9 @@ zugeordneten Tutor zu der Repository hinzu.
 ## Stakeholder
 
 Rollen:  
--Studenten  
--Tutoren  
--Organisatoren
+- Studenten  
+- Tutoren  
+- Organisatoren
 
 | Rolle       | Erwartungshaltung                                                                                                |
 |:------------|:-----------------------------------------------------------------------------------------------------------------|
@@ -24,19 +24,19 @@ Rollen:
 
 ## Anleitung zur Benutzung dieser Anwendung
 
--GitHub Konto erstellen.  
--Bei GitHub anmelden.  
--Organisation auf GitHub erstellen.  
--Bei Developer settings GitHub App erstellen.  
--Bei Developer settings OAuth App erstellen.  
--Beide Apps auf der Organisation installieren.  
--Daten aus den beiden Apps entnehmen.  
--APP_ID, CLIENT_ID, CLIENT_SECRET, INSTALLATIONS_ID, ORGANISATION_NAME in einer `.env` Datei abspeichern.  
--Private key generieren.  
--Private key umwandeln mit dem
+- GitHub Konto erstellen.  
+- Bei GitHub anmelden.  
+- Organisation auf GitHub erstellen.  
+- Bei Developer settings GitHub App erstellen.  
+- Bei Developer settings OAuth App erstellen.  
+- Beide Apps auf der Organisation installieren.  
+- Daten aus den beiden Apps entnehmen.  
+- APP_ID, CLIENT_ID, CLIENT_SECRET, INSTALLATIONS_ID, ORGANISATION_NAME in einer `.env` Datei abspeichern.  
+- Private key generieren.  
+- Private key umwandeln mit dem
 Befehl `openssl pkcs8 -topk8 -inform PEM -outform DER -in key.pem -out key.der -nocrypt`  
--key.der in src/main/resources abspeichern.  
--Anwendung im Terminal mit den Befehl `docker-compose up` starten.
+- key.der in src/main/resources abspeichern.  
+- Anwendung im Terminal mit den Befehl `docker-compose up` starten.
 
 ## Benutzte Frameworks/Tools/Programme/APIs/Libraries
 
