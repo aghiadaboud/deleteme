@@ -34,8 +34,7 @@ Rollen:
 - APP_ID, CLIENT_ID, CLIENT_SECRET, INSTALLATIONS_ID, ORGANISATION_NAME in einer `.env` Datei abspeichern.  
 - Private key generieren.  
 - Private key umwandeln mit dem
-Befehl `openssl pkcs8 -topk8 -inform PEM -outform DER -in key.pem -out key.der -nocrypt`  
-- key.der in src/main/resources abspeichern.  
+Befehl `openssl pkcs8 -topk8 -inform PEM -outform DER -in key.pem -out key.der -nocrypt` 
 - Anwendung im Terminal mit den Befehl `docker-compose up` starten.
 
 ## Benutzte Frameworks/Tools/Programme/APIs/Libraries
@@ -46,8 +45,8 @@ Befehl `openssl pkcs8 -topk8 -inform PEM -outform DER -in key.pem -out key.der -
 - MySQL
 - Thymeleaf
 - CSS und Bootstrap
-- Spring Security und OAuth2(eine OAuth App auf GitHub)(Login for users)
-- GitHub REST API(um innerhalb einer Github-Organisation neue Repositories anlegen zu können)
+- [Spring Security und OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)(Login über Github)
+- GitHub App und [diese Java Bibliothek](https://github-api.kohsuke.org/index.html), um mit [Github REST API](https://docs.github.com/en/rest) zu kommunizieren, sodass die Anwendung sich gegenüber GitHub authentifizieren und innerhalb einer Github-Organisation neue Repositories anlegen kann
 
 ## Domain Storytelling
 
@@ -84,4 +83,4 @@ Production: MySQL Database running in a Docker container.
 **Systemaufteilung**
 
 Für die Systemaufteilung habe ich mich für einen Monolithen entschieden, da die Anwendung klein ist und deshalb die
-Aufteilung in verschiedener SCSs(Self-Contained-Systems) nicht erforderlich ist.
+Aufteilung in Microservices oder SCSs(Self-Contained-Systems) nicht erforderlich ist.
